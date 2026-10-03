@@ -1,0 +1,2486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=aa2b67ae-b679-4fe7-849b-19c57c4b5771
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>BDC Service Knowledge Base &amp; Live Call Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pk-navy:#0F294C; --pk-indigo:#1D1F34; --pk-slate:#4D5D6D;
+  --pk-gold:#B88917; --pk-amber:#E39F0E; --pk-sand:#DDB568;
+  --pk-paper:#F4F1EA; --pk-paper2:#ECE7DC; --pk-ink:#1B1D2A;
+  --navy:#0F294C; --indigo:#1D1F34;
+  --graphite-950:#F4F1EA;
+  --graphite-900:#FFFFFF;
+  --graphite-800:#ECE7DC;
+  --graphite-700:rgba(15,41,76,.16);
+  --graphite-600:#4D5D6D;
+  --steel-400:#4D5D6D;
+  --steel-300:#4D5D6D;
+  --fog-100:#1B1D2A;
+  --white:#0F294C;
+  --amber:#B88917;
+  --amber-dim:#DDB568;
+  --teal:#0F294C;
+  --teal-dim:#B88917;
+  --red:#b3402e;
+  --green:#2e7d4f;
+  --font-display:'Fraunces', Georgia, serif;
+  --font-body:'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:'Space Mono', 'Courier New', monospace;
+  --radius:14px;
+}
+@font-face{font-family:'Barlow Condensed';src:local('Arial Narrow');}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--graphite-950);
+  color:var(--fog-100);
+  font-family:var(--font-body);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+button{font-family:inherit;cursor:pointer;}
+a{color:inherit;}
+::selection{background:var(--amber);color:var(--graphite-950);}
+
+/* ===== Layout shell ===== */
+.app{display:flex;min-height:100vh;}
+
+.sidebar{
+  width:290px;flex-shrink:0;
+  background:var(--graphite-900);
+  border-right:1px solid var(--graphite-700);
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  z-index:50;
+}
+.brand{
+  padding:18px 16px 14px;border-bottom:1px solid var(--graphite-700);text-align:center;
+}
+.brand .tag{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;color:var(--amber);text-transform:uppercase;
+}
+.brand h1{
+  font-family:var(--font-display);font-weight:700;font-size:22px;line-height:1.05;margin:4px 0 0;
+  letter-spacing:.01em;color:var(--white);white-space:nowrap;
+}
+.brand .dealer{font-family:var(--font-display);font-weight:600;font-size:16px;letter-spacing:.06em;color:var(--amber);text-transform:uppercase;margin-top:3px;}
+.nav{padding:10px 8px;display:flex;flex-direction:column;gap:2px;flex:0 0 auto;}
+.nav button{
+  display:flex;align-items:center;gap:10px;
+  background:transparent;border:none;color:var(--steel-300);
+  text-align:left;padding:9px 10px;border-radius:var(--radius);
+  font-size:13.5px;font-weight:600;letter-spacing:.01em;
+  border-left:3px solid transparent;
+}
+.nav button:hover{background:var(--graphite-800);color:var(--white);}
+.nav button.active{background:var(--graphite-800);color:var(--amber);border-left-color:var(--amber);}
+.nav .icon{width:18px;text-align:center;font-size:14px;}
+.nav-section-label{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;color:var(--steel-400);
+  padding:14px 12px 4px;text-transform:uppercase;
+}
+.sidebar-foot{
+  margin-top:auto;padding:12px 14px;border-top:1px solid var(--graphite-700);
+  font-family:var(--font-mono);font-size:10px;color:var(--steel-400);letter-spacing:.03em;
+}
+
+.contact-block{padding:12px 14px;border-top:1px solid var(--graphite-700);font-size:12.5px;line-height:1.7;}
+.contact-block .contact-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;color:var(--steel-400);text-transform:uppercase;margin-bottom:4px;}
+.contact-block a{color:var(--steel-300);text-decoration:none;display:block;}
+.contact-block a:hover{color:var(--amber);}
+.contact-block b{color:var(--white);font-weight:600;}
+.contact-block .tel{display:block;color:var(--steel-300);cursor:pointer;}
+.contact-block .tel b{color:#fff;font-weight:700;}
+.contact-block .tel:hover{color:var(--amber);}
+.contact-row{display:flex;align-items:center;gap:6px;}
+.contact-row .tel{flex:1;min-width:0;}
+.tel-copy{background:transparent;border:1px solid rgba(221,181,104,.35);color:var(--pk-sand);border-radius:8px;font-size:12px;line-height:1;padding:4px 8px;flex-shrink:0;}
+.tel-copy:hover{background:rgba(221,181,104,.14);border-color:var(--pk-sand);}
+.tel-copy.ok{border-color:var(--green);color:#7dd79a;}
+.contact-block .addr{margin-top:6px;}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column;}
+
+/* ===== Top bar ===== */
+.topbar{
+  position:sticky;top:0;z-index:40;
+  background:var(--graphite-900);border-bottom:1px solid var(--graphite-700);
+  padding:12px 20px;display:flex;gap:14px;align-items:center;
+}
+.hamburger{display:none;background:none;border:1px solid var(--graphite-700);color:var(--fog-100);border-radius:var(--radius);width:36px;height:36px;flex-shrink:0;font-size:16px;}
+.searchwrap{position:relative;flex:1;max-width:760px;}
+.searchwrap input{
+  width:100%;background:var(--graphite-950);border:1.5px solid var(--graphite-700);
+  color:var(--white);padding:11px 14px 11px 40px;border-radius:var(--radius);
+  font-size:15px;font-family:var(--font-body);
+}
+.searchwrap input:focus{outline:none;border-color:var(--amber);}
+.searchwrap .sicon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--steel-400);font-size:15px;}
+.topbar-actions{display:flex;gap:8px;align-items:center;flex-shrink:0;}
+.btn-callmode{
+  background:var(--amber);color:var(--graphite-950);border:none;font-weight:800;
+  padding:10px 16px;border-radius:var(--radius);font-size:12.5px;letter-spacing:.03em;
+  text-transform:uppercase;font-family:var(--font-display);white-space:nowrap;
+}
+.btn-callmode:hover{background:#ffbc26;}
+.btn-upload{
+  background:transparent;color:var(--teal);border:1.5px solid var(--teal-dim);
+  padding:9px 15px;border-radius:var(--radius);font-size:12.5px;letter-spacing:.02em;
+  text-transform:uppercase;font-family:var(--font-display);font-weight:700;white-space:nowrap;
+}
+.btn-upload:hover{border-color:var(--teal);background:var(--graphite-800);}
+.topbar-actions{flex-wrap:wrap;justify-content:flex-end;}
+.btn-link{
+  background:transparent;color:var(--teal);border:1.5px solid var(--teal-dim);text-decoration:none;
+  padding:8px 12px;border-radius:var(--radius);font-size:12px;letter-spacing:.02em;
+  text-transform:uppercase;font-family:var(--font-display);font-weight:700;white-space:nowrap;
+}
+.btn-link:hover{border-color:var(--amber);color:var(--amber);background:var(--graphite-800);}
+@media (max-width:900px){ .topbar{flex-wrap:wrap;} .topbar-actions{width:100%;justify-content:flex-start;} }
+
+/* ===== Content ===== */
+.content{padding:22px 26px 60px;flex:1;}
+.content-inner{max-width:1080px;margin:0 auto;}
+
+.eyebrow{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--amber);
+  text-transform:uppercase;margin:0 0 6px;
+}
+.pagetitle{
+  font-family:var(--font-display);font-size:34px;font-weight:700;color:var(--white);
+  margin:0 0 4px;letter-spacing:.01em;
+}
+.pagesub{color:var(--steel-300);font-size:14px;margin:0 0 22px;max-width:640px;line-height:1.5;}
+
+/* Dashboard cards */
+.card-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-bottom:28px;
+}
+.dcard{
+  background:var(--graphite-900);border:1px solid var(--graphite-700);border-radius:var(--radius);
+  padding:16px;text-align:left;color:var(--fog-100);position:relative;overflow:hidden;
+  transition:border-color .12s,transform .12s;
+}
+.dcard:hover{border-color:var(--amber);transform:translateY(-1px);}
+.dcard .dicon{font-size:22px;margin-bottom:10px;display:block;}
+.dcard .dtitle{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--white);margin-bottom:3px;}
+.dcard .ddesc{font-size:12px;color:var(--steel-400);line-height:1.4;}
+.dcard::after{
+  content:"";position:absolute;left:0;bottom:0;height:3px;width:100%;
+  background:var(--graphite-700);
+}
+.dcard:hover::after{background:var(--amber);}
+
+.examples-row{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 30px;}
+.chip{
+  background:var(--graphite-800);border:1px solid var(--graphite-700);color:var(--steel-300);
+  font-size:12px;padding:7px 12px;border-radius:20px;font-family:var(--font-mono);
+}
+.chip:hover{border-color:var(--teal);color:var(--white);}
+
+.section-heading{
+  font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--white);
+  text-transform:uppercase;letter-spacing:.04em;margin:26px 0 12px;
+  display:flex;align-items:center;gap:8px;
+}
+.section-heading::before{content:"";width:3px;height:14px;background:var(--amber);display:inline-block;}
+
+/* Ticket-style knowledge card (signature element) */
+.ticket{
+  background:var(--graphite-900);
+  border:1px solid var(--graphite-700);
+  border-radius:var(--radius);
+  margin-bottom:14px;
+  position:relative;
+  display:flex;
+}
+.ticket-stub{
+  width:64px;flex-shrink:0;border-right:1.5px dashed var(--graphite-600);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  background:var(--graphite-800);
+  padding:8px 4px;
+}
+.ticket-stub .stars{color:var(--amber);font-size:11px;line-height:1.3;text-align:center;letter-spacing:1px;}
+.ticket-stub .snum{font-family:var(--font-mono);color:var(--steel-400);font-size:10px;margin-top:6px;}
+.ticket-body{padding:16px 18px;flex:1;min-width:0;}
+.ticket-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;}
+.ticket-title{font-family:var(--font-display);font-size:21px;font-weight:700;color:var(--white);margin:0;}
+.ticket-cat{
+  font-family:var(--font-mono);font-size:10px;color:var(--teal);letter-spacing:.08em;
+  text-transform:uppercase;border:1px solid var(--teal-dim);padding:3px 8px;border-radius:20px;white-space:nowrap;
+}
+.ticket-field{margin-top:12px;}
+.ticket-field .flabel{
+  font-family:var(--font-mono);font-size:10.5px;color:var(--steel-400);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;
+}
+.ticket-field .fval{font-size:14px;line-height:1.55;color:var(--fog-100);}
+.quote-block{
+  background:var(--graphite-950);border-left:3px solid var(--amber);
+  padding:12px 14px;margin-top:6px;border-radius:0 var(--radius) var(--radius) 0;
+  font-size:14px;line-height:1.6;color:var(--white);font-style:italic;
+}
+.copybtn{
+  background:var(--graphite-800);border:1px solid var(--graphite-600);color:var(--steel-300);
+  font-size:11.5px;font-family:var(--font-mono);padding:6px 11px;border-radius:var(--radius);
+  display:inline-flex;align-items:center;gap:6px;margin-top:8px;
+}
+.copybtn:hover{border-color:var(--teal);color:var(--white);}
+.copybtn.copied{border-color:var(--green);color:var(--green);}
+.related-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.related-tag{
+  font-size:11.5px;background:var(--graphite-800);border:1px solid var(--graphite-700);
+  color:var(--steel-300);padding:5px 10px;border-radius:14px;
+}
+.related-tag:hover{color:var(--white);border-color:var(--amber);}
+.fav-toggle{
+  background:none;border:none;color:var(--steel-400);font-size:17px;flex-shrink:0;
+}
+.fav-toggle.active,.fav-toggle:hover{color:var(--amber);}
+
+/* Simple data table */
+.ptable{width:100%;border-collapse:collapse;margin-bottom:8px;}
+.ptable th{
+  text-align:left;font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--steel-400);padding:8px 10px;border-bottom:1px solid var(--graphite-700);
+}
+.ptable td{padding:12px 10px;border-bottom:1px solid var(--graphite-800);font-size:14px;vertical-align:top;}
+.ptable td.price{font-family:var(--font-mono);color:var(--amber);font-weight:600;font-size:15px;white-space:nowrap;}
+.ptable tr:hover td{background:var(--graphite-900);}
+
+/* Call Scripts */
+.script-block{background:var(--graphite-900);border:1px solid var(--graphite-700);border-radius:var(--radius);margin-bottom:14px;overflow:hidden;}
+.script-toggle{
+  width:100%;display:flex;align-items:center;gap:10px;background:var(--graphite-800);border:none;color:var(--white);
+  padding:14px 18px;font-family:var(--font-display);font-size:17px;font-weight:700;text-align:left;letter-spacing:.02em;
+  text-transform:uppercase;
+}
+.script-toggle:hover{background:var(--graphite-700);}
+.script-chevron{display:inline-block;transition:transform .15s;color:var(--amber);font-size:14px;flex-shrink:0;}
+.script-chevron.open{transform:rotate(90deg);}
+.script-body{max-height:0;overflow:hidden;transition:max-height .2s ease;padding:0 18px;}
+.script-body.open{max-height:2000px;padding:16px 18px 18px;}
+.script-line{font-size:14px;line-height:1.6;color:var(--fog-100);margin-bottom:10px;display:flex;gap:8px;}
+.script-num{font-family:var(--font-mono);color:var(--steel-400);font-size:12px;flex-shrink:0;min-width:18px;}
+.script-subline{font-size:13px;color:var(--steel-300);margin:4px 0 4px 26px;font-style:italic;}
+.sms-msg{background:var(--graphite-800);border-left:3px solid var(--teal);border-radius:var(--radius);padding:12px 14px;margin-bottom:12px;}
+.sms-name{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;}
+.sms-text{font-size:14px;line-height:1.6;color:var(--fog-100);margin-bottom:10px;}
+.ph::after{content:attr(data-num);}
+
+/* QA Form */
+.qa-layout{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;}
+.qa-main{flex:2;min-width:320px;}
+.qa-side{flex:1;min-width:220px;background:var(--graphite-900);border:1px solid var(--graphite-700);border-radius:var(--radius);padding:16px 18px;}
+.qa-scorebar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:var(--graphite-900);border:1px solid var(--graphite-700);border-radius:var(--radius);
+  padding:14px 18px;margin-bottom:16px;position:sticky;top:0;z-index:5;
+}
+.qa-scorebar .qa-score-num{font-family:var(--font-display);font-size:30px;font-weight:700;color:var(--white);}
+.qa-scorebar .qa-score-label{font-family:var(--font-mono);font-size:10.5px;color:var(--steel-400);text-transform:uppercase;letter-spacing:.08em;}
+.qa-badge{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:5px 12px;border-radius:20px;font-weight:700;}
+.qa-badge.pass{background:rgba(92,184,92,.15);color:var(--green);border:1px solid var(--green);}
+.qa-badge.fail{background:rgba(224,86,63,.15);color:var(--red);border:1px solid var(--red);}
+.qa-row{
+  display:flex;align-items:flex-start;gap:12px;padding:11px 10px;border-bottom:1px solid var(--graphite-800);
+}
+.qa-row:hover{background:var(--graphite-900);}
+.qa-row input[type=checkbox]{width:18px;height:18px;margin-top:2px;accent-color:var(--amber);flex-shrink:0;}
+.qa-row label{flex:1;font-size:14px;line-height:1.5;color:var(--fog-100);cursor:pointer;}
+.qa-row .qa-pts{font-family:var(--font-mono);color:var(--amber);font-size:13px;font-weight:600;white-space:nowrap;}
+.qa-field{margin-bottom:14px;}
+.qa-field .flabel{font-family:var(--font-mono);font-size:10.5px;color:var(--steel-400);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;}
+.qa-field input[type=text]{
+  width:100%;background:var(--graphite-950);border:1.5px solid var(--graphite-700);border-radius:var(--radius);
+  color:var(--white);padding:9px 11px;font-size:14px;font-family:var(--font-body);
+}
+.qa-field input[type=text]:focus{outline:none;border-color:var(--amber);}
+.qa-resetbtn{
+  background:transparent;border:1.5px solid var(--graphite-600);color:var(--steel-300);
+  padding:8px 14px;border-radius:var(--radius);font-size:12px;font-family:var(--font-mono);margin-top:6px;
+}
+.qa-resetbtn:hover{border-color:var(--red);color:var(--red);}
+
+.hours-hero{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;
+}
+.hourcard{
+  background:var(--graphite-900);border:1px solid var(--graphite-700);border-radius:var(--radius);
+  padding:18px 16px;text-align:center;
+}
+.hourcard.closed{opacity:.55;}
+.hourcard .day{font-family:var(--font-display);font-size:19px;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.02em;}
+.hourcard .hh{font-family:var(--font-mono);font-size:19px;color:var(--amber);margin:8px 0 4px;}
+.hourcard .pk{font-size:12px;color:var(--steel-400);}
+
+.principle-banner{
+  background:linear-gradient(120deg,var(--graphite-900),var(--graphite-800));
+  border:1px solid var(--amber-dim);border-left:4px solid var(--amber);
+  border-radius:var(--radius);padding:18px 20px;margin:20px 0;
+}
+.principle-banner p{font-size:15px;line-height:1.6;font-style:italic;color:var(--white);margin:0 0 10px;}
+.principle-banner p:last-child{margin-bottom:0;}
+.principle-banner .plabel{font-family:var(--font-mono);font-size:10px;color:var(--amber);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;}
+
+.empty-state{
+  text-align:center;padding:60px 20px;color:var(--steel-400);
+}
+.empty-state .eicon{font-size:34px;margin-bottom:10px;display:block;}
+.empty-state .emsg{font-family:var(--font-mono);font-size:14px;color:var(--steel-300);background:var(--graphite-900);
+  border:1px solid var(--graphite-700);display:inline-block;padding:10px 18px;border-radius:var(--radius);}
+
+/* VIN Lookup card (Recalls page) */
+.vin-card{
+  background:var(--graphite-900);border:1px solid var(--graphite-700);border-radius:var(--radius);
+  display:flex;overflow:hidden;margin-bottom:14px;
+}
+.vin-card-main{flex:1.4;padding:20px 22px;border-right:1px solid var(--graphite-700);}
+.vin-h5{font-family:var(--font-display);font-size:19px;font-weight:700;color:var(--white);margin:0 0 14px;}
+.vin-input-row{display:flex;gap:10px;flex-wrap:wrap;}
+.vin-input-row input{
+  flex:1;min-width:220px;background:var(--graphite-950);border:1.5px solid var(--graphite-700);
+  color:var(--white);padding:12px 14px;border-radius:var(--radius);font-size:15px;
+  font-family:var(--font-mono);letter-spacing:.03em;text-transform:uppercase;
+}
+.vin-input-row input:focus{outline:none;border-color:var(--amber);}
+.vin-result-msg{color:var(--red);font-size:13px;margin-top:8px;}
+.vin-note{
+  margin-top:16px;font-size:12.5px;line-height:1.6;color:var(--steel-400);
+  background:var(--graphite-950);border-left:3px solid var(--teal-dim);padding:10px 12px;border-radius:0 var(--radius) var(--radius) 0;
+}
+.vin-note strong{color:var(--teal);}
+.vin-card-side{flex:1;padding:20px 22px;background:var(--graphite-800);}
+.vin-h4{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--white);margin:0 0 6px;text-transform:uppercase;letter-spacing:.02em;}
+.vin-p{font-size:13px;color:var(--steel-300);line-height:1.6;margin:0 0 14px;}
+.vin-contact-note{
+  font-size:12.5px;color:var(--steel-400);background:var(--graphite-900);border:1px solid var(--graphite-700);
+  border-radius:var(--radius);padding:10px 14px;margin-bottom:24px;
+}
+.vin-contact-note strong{color:var(--amber);}
+.vin-contact-note a{color:var(--amber);text-decoration:none;}
+@media (max-width:900px){
+  .vin-card{flex-direction:column;}
+  .vin-card-main{border-right:none;border-bottom:1px solid var(--graphite-700);}
+}
+
+/* Upload Update modal */
+.update-overlay{
+  position:fixed;inset:0;background:rgba(10,12,14,.72);z-index:110;
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.update-overlay.open{display:flex;}
+.update-modal{
+  background:var(--graphite-900);border:1px solid var(--graphite-700);border-radius:var(--radius);
+  width:100%;max-width:640px;max-height:88vh;overflow-y:auto;
+}
+.update-modal-head{
+  display:flex;justify-content:space-between;align-items:center;padding:16px 20px;
+  border-bottom:1px solid var(--graphite-700);position:sticky;top:0;background:var(--graphite-900);
+}
+.update-modal-head h3{font-family:var(--font-display);font-size:20px;color:var(--white);margin:0;font-weight:700;}
+.update-modal-head button{background:none;border:1px solid var(--graphite-700);color:var(--steel-300);width:32px;height:32px;border-radius:var(--radius);font-size:15px;}
+.update-modal-body{padding:18px 20px 22px;}
+.update-modal-body input[type=file]{
+  width:100%;background:var(--graphite-950);border:1.5px dashed var(--graphite-600);border-radius:var(--radius);
+  padding:14px;color:var(--steel-300);font-size:13px;margin-bottom:12px;
+}
+.update-modal-body textarea{
+  width:100%;background:var(--graphite-950);border:1.5px solid var(--graphite-700);border-radius:var(--radius);
+  padding:12px 14px;color:var(--white);font-family:var(--font-mono);font-size:12.5px;resize:vertical;margin-bottom:14px;
+}
+.update-modal-body textarea:focus,.update-modal-body input[type=file]:focus{outline:none;border-color:var(--amber);}
+.update-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
+.update-log{margin-top:14px;display:flex;flex-direction:column;gap:6px;}
+.update-log-line{
+  font-family:var(--font-mono);font-size:12px;padding:8px 12px;border-radius:var(--radius);
+  background:var(--graphite-950);border-left:3px solid var(--graphite-600);
+}
+.update-log-line.ok{border-left-color:var(--green);color:var(--fog-100);}
+.update-log-line.err{border-left-color:var(--red);color:var(--fog-100);}
+.update-schema-hint{
+  font-family:var(--font-mono);font-size:11px;color:var(--steel-400);line-height:1.6;
+  background:var(--graphite-950);border:1px solid var(--graphite-800);border-radius:var(--radius);
+  padding:10px 12px;margin-bottom:14px;white-space:pre-wrap;
+}
+
+/* Quick Call Mode */
+.callmode-overlay{
+  position:fixed;inset:0;background:var(--graphite-950);z-index:100;
+  display:none;flex-direction:column;
+}
+.callmode-overlay.open{display:flex;}
+.callmode-top{
+  padding:16px 20px;border-bottom:1px solid var(--graphite-700);display:flex;gap:12px;align-items:center;
+  background:var(--graphite-900);
+}
+.callmode-top .cmlabel{font-family:var(--font-mono);font-size:10px;color:var(--red);letter-spacing:.1em;
+  border:1px solid var(--red);padding:4px 8px;border-radius:20px;flex-shrink:0;display:flex;align-items:center;gap:6px;}
+.dot-live{width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block;animation:pulse 1.4s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.callmode-top input{
+  flex:1;background:var(--graphite-950);border:1.5px solid var(--graphite-700);color:var(--white);
+  padding:13px 16px;border-radius:var(--radius);font-size:18px;
+}
+.callmode-top input:focus{outline:none;border-color:var(--amber);}
+.callmode-close{background:none;border:1px solid var(--graphite-700);color:var(--steel-300);width:40px;height:40px;border-radius:var(--radius);font-size:18px;flex-shrink:0;}
+.callmode-body{flex:1;overflow-y:auto;padding:20px;}
+.callmode-body .content-inner{max-width:720px;}
+.cm-quicklinks{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+.cm-quicklinks button{
+  background:var(--graphite-800);border:1px solid var(--graphite-700);color:var(--steel-300);
+  padding:9px 14px;font-size:12.5px;border-radius:var(--radius);font-family:var(--font-mono);
+}
+.cm-quicklinks button:hover{border-color:var(--teal);color:var(--white);}
+
+.favlist,.recentlist{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.favlist button,.recentlist button{
+  background:var(--graphite-900);border:1px solid var(--graphite-700);color:var(--fog-100);
+  padding:8px 13px;border-radius:var(--radius);font-size:12.5px;display:flex;align-items:center;gap:6px;
+}
+.favlist button:hover,.recentlist button:hover{border-color:var(--amber);}
+.favlist .star{color:var(--amber);}
+.small-muted{color:var(--steel-400);font-size:13px;}
+
+/* Mobile */
+@media (max-width:900px){
+  .sidebar{position:fixed;left:-310px;transition:left .18s;box-shadow:0 0 0 9999px rgba(0,0,0,.5);}
+  .sidebar.open{left:0;}
+  .hamburger{display:flex;align-items:center;justify-content:center;}
+  .content{padding:16px 14px 50px;}
+  .pagetitle{font-size:26px;}
+  .hours-hero{grid-template-columns:1fr;}
+  .qa-layout{flex-direction:column;}
+  .ticket{flex-direction:column;}
+  .ticket-stub{width:100%;flex-direction:row;justify-content:center;gap:10px;border-right:none;border-bottom:1.5px dashed var(--graphite-600);padding:8px;}
+  .card-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:480px){
+  .card-grid{grid-template-columns:1fr;}
+}
+/* Appointment Sales Tracker */
+.trk-rep{font-family:var(--font-mono);font-size:11px;color:var(--graphite-950);background:var(--amber);padding:2px 7px;border-radius:2px;margin-left:4px;}
+.trk-toolbar{display:flex;align-items:center;gap:8px;margin:-2px 0 12px;flex-wrap:wrap;}
+.trk-updated{font-size:11px;color:var(--steel-400);font-family:var(--font-mono);}
+.trk-btn{background:var(--graphite-800);border:1px solid var(--graphite-600);color:var(--fog-100);font-size:12px;padding:6px 12px;border-radius:var(--radius);cursor:pointer;}
+.trk-btn:hover{border-color:var(--amber);}
+.trk-btn.primary{background:var(--amber);color:var(--graphite-950);border-color:var(--amber);font-weight:600;}
+.trk-msg{background:var(--graphite-900);border:1px solid var(--graphite-700);padding:16px;border-radius:var(--radius);color:var(--steel-300);font-size:13px;line-height:1.5;margin-bottom:20px;}
+.trk-msg.err{border-color:var(--red);color:var(--fog-100);}
+.trk-settings{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;background:var(--graphite-900);border:1px solid var(--graphite-700);padding:14px;border-radius:var(--radius);margin-bottom:14px;align-items:end;}
+.trk-settings label{font-size:11px;color:var(--steel-300);display:flex;flex-direction:column;gap:4px;}
+.trk-input{background:var(--graphite-800);border:1px solid var(--graphite-600);color:var(--white);padding:7px 8px;border-radius:var(--radius);font-size:13px;}
+.trk-detected{grid-column:1/-1;font-size:12px;color:var(--steel-300);}
+.trk-detected b{color:var(--teal);}
+.trk-panel{background:var(--graphite-900);border:1px solid var(--graphite-700);border-radius:var(--radius);padding:16px;margin-bottom:20px;}
+.trk-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.trk-title{font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--white);}
+.trk-range{font-size:12px;color:var(--steel-400);}
+.trk-nav{display:flex;gap:6px;flex-wrap:wrap;align-items:center;justify-content:flex-end;}
+.trk-nav .trk-seg{display:flex;gap:4px;}
+.trk-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px;}
+.trk-stat{background:var(--graphite-800);border-left:3px solid var(--graphite-600);padding:12px 12px;border-radius:var(--radius);text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
+.trk-stat.good{border-left-color:var(--green);}
+.trk-stat.warn{border-left-color:var(--red);}
+.trk-stat.amber{border-left-color:var(--amber);}
+.trk-num{font-family:var(--font-display);font-size:32px;font-weight:700;color:var(--white);line-height:1;text-align:center;}
+.trk-stat.big .trk-num{font-size:44px;color:var(--green);}
+.trk-lbl{font-family:var(--font-display);font-size:19px;font-weight:700;color:var(--white);letter-spacing:.01em;margin-top:4px;text-align:center;line-height:1.2;text-transform:none;}
+.trk-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;}
+.trk-day{background:var(--graphite-800);border:1px solid var(--graphite-700);border-radius:var(--radius);padding:8px 6px;min-height:150px;display:flex;flex-direction:column;}
+.trk-day.today{border-color:var(--amber);}
+.trk-dayname{font-family:var(--font-mono);font-size:11px;color:var(--steel-300);text-transform:uppercase;display:flex;justify-content:space-between;}
+.trk-dayname span{color:var(--steel-400);}
+.trk-daycount{font-family:var(--font-display);font-size:26px;font-weight:700;color:var(--white);}
+.trk-bar{height:4px;background:var(--graphite-700);margin-bottom:6px;position:relative;}
+.trk-bar i{position:absolute;left:0;top:0;height:100%;background:var(--amber);display:block;}
+.trk-daylist{display:flex;flex-direction:column;gap:4px;}
+.trk-appt{font-size:11px;color:var(--pk-ink);background:#fff;border:1px solid rgba(15,41,76,.14);border-left:3px solid var(--graphite-600);padding:5px 6px;line-height:1.35;word-break:break-word;border-radius:8px;display:flex;flex-direction:column;gap:3px;}
+.trk-appt.show{background:#e3f2e8;border-left-color:var(--green);border-color:var(--green);color:var(--pk-ink);}
+.trk-appt .a-name{font-weight:600;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.trk-appt .a-name b{font-family:var(--font-mono);font-weight:700;}
+.trk-appt em{color:#fff;background:var(--green);font-style:normal;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.02em;padding:2px 7px;border-radius:100px;display:inline-block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;align-self:flex-start;}
+.trk-weeks{display:flex;flex-direction:column;gap:8px;}
+.trk-wrow{display:grid;grid-template-columns:110px 1fr 70px;gap:10px;align-items:center;font-size:12px;color:var(--steel-300);}
+.trk-wbar{position:relative;height:14px;background:var(--graphite-800);}
+.trk-wbar i{position:absolute;left:0;top:0;height:100%;display:block;}
+.trk-wbar i.a{background:var(--graphite-600);}
+.trk-wbar i.s{background:var(--green);height:60%;top:20%;}
+.trk-wnum{text-align:right;font-family:var(--font-mono);}
+.trk-wnum b{color:var(--green);}
+.trk-legend{font-size:11px;color:var(--steel-400);display:flex;gap:6px;align-items:center;margin-top:4px;}
+.trk-legend span{width:10px;height:10px;display:inline-block;}
+.trk-legend .s{background:var(--green);}
+.trk-legend .a{background:var(--graphite-600);margin-left:8px;}
+.trk-raw-toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0;}
+.trk-raw-toolbar .trk-input{min-width:200px;flex:1;}
+.trk-seg{display:flex;gap:4px;}
+.trk-seg .trk-btn.active{border-color:var(--amber);color:var(--amber);}
+.trk-tablewrap{overflow-x:auto;border:1px solid var(--graphite-800);border-radius:var(--radius);}
+.trk-table{width:100%;border-collapse:collapse;min-width:900px;border:1px solid var(--graphite-700);}
+.trk-table th,.trk-table td{border-right:1px solid var(--graphite-700);border-bottom:1px solid var(--graphite-700);}
+.trk-table th:last-child,.trk-table td:last-child{border-right:none;}
+.trk-table th{text-align:center;font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--pk-sand);padding:9px 10px;border-bottom:1px solid var(--graphite-700);background:var(--pk-navy);white-space:nowrap;}
+.trk-table td{padding:9px 10px;border-bottom:1px solid var(--graphite-700);font-size:13px;color:var(--fog-100);vertical-align:middle;text-align:center;}
+.trk-table tr:hover td{background:var(--graphite-800);}
+.trk-pill{font-family:var(--font-mono);font-size:10.5px;padding:3px 9px;border-radius:12px;border:1px solid;white-space:nowrap;}
+.trk-pill.show{color:var(--green);border-color:var(--green);}
+.trk-pill.pend{color:var(--amber);border-color:var(--amber-dim);}
+.trk-count{font-size:11.5px;color:var(--steel-400);font-family:var(--font-mono);}
+@media(max-width:700px){
+  .trk-days{grid-template-columns:1fr;}
+  .trk-day{min-height:0;flex-direction:row;flex-wrap:wrap;gap:8px;align-items:center;}
+  .trk-bar{display:none;}
+  .trk-wrow{grid-template-columns:90px 1fr 56px;}
+}
+/* ===== Prime Kreatives brand layer (Fraunces / Work Sans / Space Mono, paper + navy/indigo + gold/sand) ===== */
+body{background:var(--pk-paper);color:var(--pk-ink);}
+::selection{background:var(--pk-gold);color:#fff;}
+.sidebar{background:var(--pk-indigo);border-right:1px solid rgba(221,181,104,.18);}
+.brand{border-bottom:1px solid rgba(221,181,104,.18);}
+.brand .tag{color:var(--pk-sand);}
+.brand h1{color:var(--pk-paper);font-weight:500;letter-spacing:-.01em;}
+.brand .dealer{color:var(--pk-sand);}
+.nav button{color:rgba(244,241,234,.68);border-left:3px solid transparent;border-radius:8px;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;}
+.nav button:hover{background:rgba(244,241,234,.06);color:var(--pk-paper);}
+.nav button.active{background:rgba(221,181,104,.14);color:var(--pk-sand);border-left-color:var(--pk-gold);}
+.nav-section-label{color:var(--pk-sand);}
+.contact-block{border-top:1px solid rgba(221,181,104,.18);color:rgba(244,241,234,.7);}
+.contact-block .contact-label{color:var(--pk-sand);}
+.contact-block a,.contact-block .tel{color:rgba(244,241,234,.75);}
+.contact-block a:hover,.contact-block .tel:hover{color:var(--pk-sand);}
+.contact-block b{color:var(--pk-paper);}
+.sidebar-foot{border-top:1px solid rgba(221,181,104,.18);color:rgba(244,241,234,.5);}
+.sidebar-foot span{color:var(--pk-sand);}
+.topbar{background:var(--pk-paper);border-bottom:1px solid rgba(15,41,76,.12);}
+.searchwrap input{background:#fff;border:1.5px solid rgba(15,41,76,.16);color:var(--pk-ink);border-radius:100px;}
+.searchwrap input:focus{border-color:var(--pk-gold);outline:none;}
+.searchwrap .sicon{color:var(--pk-gold);}
+.btn-callmode{background:var(--pk-gold);color:var(--pk-indigo);border-radius:100px;font-family:var(--font-mono);}
+.btn-callmode:hover{background:var(--pk-amber);}
+.btn-upload{border:1.5px solid var(--pk-navy);color:var(--pk-navy);border-radius:100px;font-family:var(--font-mono);}
+.btn-link{border:1.5px solid rgba(15,41,76,.25);color:var(--pk-navy);border-radius:100px;font-family:var(--font-mono);}
+.btn-link:hover{border-color:var(--pk-gold);color:var(--pk-gold);background:#fff;}
+.eyebrow{color:var(--pk-gold);}
+.eyebrow::before{content:"";width:24px;height:1px;background:var(--pk-gold);display:inline-block;margin-right:10px;vertical-align:middle;}
+.pagetitle{font-weight:500;letter-spacing:-.01em;color:var(--pk-navy);}
+.pagesub{color:var(--pk-slate);}
+.dcard,.ticket,.script-block,.qa-side,.trk-panel,.hourcard,.coach-card,.feedback-box{background:#fff;border:1px solid rgba(27,29,42,.08);box-shadow:0 8px 18px -12px rgba(15,41,76,.25);}
+.dcard .dtitle,.ticket-title,.trk-title{color:var(--pk-navy);font-weight:500;}
+.dcard .ddesc{color:var(--pk-slate);}
+.dcard::after{background:rgba(15,41,76,.12);}
+.dcard:hover{border-color:var(--pk-gold);}
+.dcard:hover::after{background:var(--pk-gold);}
+.section-heading{color:var(--pk-navy);}
+.ticket-stub{background:var(--pk-navy);}
+.ticket-stub .stars{color:var(--pk-sand);}
+.ticket-stub .snum{color:rgba(244,241,234,.65);}
+.ticket-cat{color:var(--pk-gold);border-color:var(--pk-sand);}
+.quote-block{background:var(--pk-paper);border-left-color:var(--pk-gold);color:var(--pk-navy);}
+.copybtn{background:var(--pk-paper2);border-color:rgba(15,41,76,.16);color:var(--pk-navy);border-radius:100px;font-family:var(--font-mono);}
+.script-toggle{background:var(--pk-navy);color:var(--pk-paper);}
+.script-toggle:hover{background:var(--pk-indigo);}
+.script-chevron{color:var(--pk-sand);}
+.qa-section-header{background:var(--pk-navy);}
+.qa-scorebar{background:#fff;border-color:rgba(15,41,76,.12);}
+.qa-scorebar .qa-score-num{color:var(--pk-navy);}
+.qa-row input[type=checkbox]{accent-color:var(--pk-gold);}
+.qa-pts{color:var(--pk-gold);}
+.trk-rep{background:var(--pk-gold);color:var(--pk-indigo);}
+.trk-btn{background:#fff;border:1px solid rgba(15,41,76,.2);color:var(--pk-navy);border-radius:100px;font-family:var(--font-mono);}
+.trk-btn:hover{border-color:var(--pk-gold);color:var(--pk-gold);}
+.trk-btn.primary{background:var(--pk-gold);border-color:var(--pk-gold);color:var(--pk-indigo);}
+.trk-stat{background:var(--pk-paper);}
+.trk-day{background:var(--pk-paper);border-color:rgba(15,41,76,.12);}
+.trk-day.today{border-color:var(--pk-gold);}
+.trk-daycount,.trk-num{color:var(--pk-navy);}
+.trk-table th{background:var(--pk-navy);color:var(--pk-sand);}
+.callmode-overlay{background:var(--pk-paper);}
+.callmode-top{background:var(--pk-indigo);border-bottom:1px solid rgba(221,181,104,.18);}
+.callmode-top input{background:#fff;border-color:rgba(15,41,76,.2);color:var(--pk-ink);border-radius:100px;}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="tag">BDC Reference System</div>
+      <h1>Service Knowledge Base</h1>
+      <div class="dealer">Centereach Hyundai</div>
+    </div>
+    <div class="nav" id="navList"></div>
+    <div class="contact-block notranslate" translate="no" data-no-click-to-call="true" data-aloware-ignore="true">
+      <div class="contact-label">Contact</div>
+      <div class="contact-row"><span class="tel" role="link" tabindex="0" data-tel="6316157024"><b>Sales:</b> 631-615-7024</span><button class="tel-copy" type="button" data-copy="6316157024" data-fmt="631-615-7024" title="Copy Sales number">⧉</button></div>
+      <div class="contact-row"><span class="tel" role="link" tabindex="0" data-tel="6315422977"><b>Parts:</b> 631-542-2977</span><button class="tel-copy" type="button" data-copy="6315422977" data-fmt="631-542-2977" title="Copy Parts number">⧉</button></div>
+      <div class="contact-row"><span class="tel" role="link" tabindex="0" data-tel="6315800800"><b>Service:</b> 631-580-0800</span><button class="tel-copy" type="button" data-copy="6315800800" data-fmt="631-580-0800" title="Copy Service number">⧉</button></div>
+      <a class="addr" href="https://www.google.com/maps/place/Centereach+Hyundai/@40.8602266,-73.0759393,19.07z/data=!4m13!1m7!3m6!1s0x89e847778b8a5697:0x9f5936b0407c0b33!2s1815+Middle+Country+Rd,+Centereach,+NY+11720!3b1!8m2!3d40.8603843!4d-73.0754834!3m4!1s0x89e847829d6b5e09:0xa5d8178a9e1fcb2a!8m2!3d40.8603899!4d-73.0755897" target="_blank" rel="noopener"><b>Address:</b> 1815 Middle Country Rd, Centereach, NY 11720</a>
+    </div>
+    <div class="sidebar-foot">Created by Prime Kreatives for RA BDC Solutions</div>
+  </nav>
+
+  <div class="main">
+    <div class="topbar">
+      <button class="hamburger" id="hamburgerBtn">☰</button>
+      <div class="searchwrap">
+        <span class="sicon">🔎</span>
+        <input id="globalSearch" type="text" placeholder="What do you need to know?" autocomplete="off">
+      </div>
+      <div class="topbar-actions">
+        <a class="btn-link" href="https://docs.google.com/spreadsheets/d/13I9Mj9K5gQ5fI4M1bxS0s7woYfy2ugVXLi3QnNlyq0w/edit?pli=1&amp;gid=0#gid=0" target="_blank" rel="noopener">CH APPT Tracker</a>
+        <a class="btn-link" href="https://unrubble.com/" target="_blank" rel="noopener">Unrubble</a>
+        <a class="btn-link" href="https://app.aloware.io/login" target="_blank" rel="noopener">Alloware</a>
+        <a class="btn-link" href="https://www.centereachhyundai.com/" target="_blank" rel="noopener">Dealer Website</a>
+        <a class="btn-link" href="https://docs.google.com/spreadsheets/d/1BRq2xRjFZPQkjn0GXyfCZPUf42AdIlIujqGOfzuSdXA/edit?pli=1&amp;gid=1143598152#gid=1143598152" target="_blank" rel="noopener">CH Leads Tracker</a>
+      </div>
+    </div>
+
+    <div class="content"><div class="content-inner" id="viewRoot"></div></div>
+  </div>
+</div>
+
+<!-- Quick Call Mode overlay -->
+<div class="callmode-overlay" id="callModeOverlay">
+  <div class="callmode-top">
+    <span class="cmlabel"><span class="dot-live"></span>LIVE CALL</span>
+    <input id="callModeInput" type="text" placeholder="Customer question / objection…" autocomplete="off">
+    <button class="callmode-close" id="closeCallMode">✕</button>
+  </div>
+  <div class="callmode-body"><div class="content-inner" id="callModeRoot"></div></div>
+</div>
+
+<!-- Upload Update modal -->
+<div class="update-overlay" id="updateOverlay">
+  <div class="update-modal">
+    <div class="update-modal-head">
+      <h3>Upload Data Update</h3>
+      <button id="closeUpdateModal">✕</button>
+    </div>
+    <div class="update-modal-body">
+      <p class="pagesub" style="margin-bottom:12px;">Upload a JSON file, or paste JSON below, with corrected or new pricing, hours, procedures, or objection wording. Entries that match an existing title (or objection ID) are updated in place; anything new is added. This applies for the current session — use <strong>Download Current Data</strong> to save a backup you can re-upload next time you open the file.</p>
+      <div class="update-schema-hint">Recognized top-level keys:
+pricing, managerSpecial, financing, appointments, serviceHours,
+technical, recalls, logistics, objections, quickReference, practices
+
+Example:
+{"pricing":[{"service":"Tire Rotation","price":"$54.95"}]}</div>
+      <input type="file" id="updateFileInput" accept="application/json,.json">
+      <textarea id="updateTextArea" rows="7" placeholder='Paste JSON here…'></textarea>
+      <div class="update-actions">
+        <button id="applyUpdateBtn" class="btn-callmode" type="button">Apply Update</button>
+        <button id="downloadDataBtn" class="copybtn" type="button">⬇ Download Current Data (JSON)</button>
+      </div>
+      <div id="updateLog" class="update-log"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   SOURCE DATA
+   Verbatim from the provided dealership source material.
+   Do not alter wording, prices, hours, or rebuttal text in this object.
+========================================================================= */
+const NOT_FOUND = "Information not available in the provided knowledge base.";
+
+const PRICING = [
+  {service:"NYSI (New Vehicle < 2yrs)", price:"$10.00", notes:""},
+  {service:"NYSI (Older Vehicle > 2yrs)", price:"$37.00", notes:""},
+  {service:"Synthetic Oil Change", price:"$129.95", notes:"full synthetic"},
+  {service:"Oil Change (Genesis)", price:"No genesis", notes:""},
+  {service:"Tire Rotation", price:"$49.95", notes:""},
+  {service:"Wheel Alignment", price:"$239.95", notes:"4 wheel alignment"},
+  {service:"Wheel Balance (2 wheels)", price:"$59.95", notes:""},
+  {service:"Cabin / Engine Air Filter", price:"$99.95 cabin, $89.95 engine", notes:""},
+  {service:"Diagnostic Fee", price:"$259.00", notes:""}
+];
+
+const MANAGER_SPECIAL = {
+  title:"Bundled Maintenance Package ($169.95)",
+  includes:["Synthetic Oil/Filter","Tire Rotation","Multi-Point Inspection"],
+  note:"Route through Service Advisor."
+};
+
+const FINANCING = {
+  title:"Financing",
+  content:"Sunbit financing is available for vehicle services with payment plans for 3, 6, and up to 9 months."
+};
+
+const APPOINTMENTS = [
+  {title:"Status Inquiries", tags:["status","update","vehicle status"], content:"Route all vehicle status updates via email to advisors and management."},
+  {title:"Other Brands (Genesis)", tags:["genesis","other brands"], content:"Restricted to routine maintenance or units originally sold by this dealership."},
+  {title:"Accessories", tags:["accessories"], content:"send email."},
+  {title:"Detailing", tags:["detailing"], content:"send an email."},
+  {title:"Body Shop & Rim Repair", tags:["body shop","rim repair","rim"], content:"On-site services available.\n\nRim repairs typically require a 24-48 hour drop-off period."},
+  {title:"Glass Replacement", tags:["glass","windshield"], content:"Coordinate via BDC email; include full VIN for parts matching."}
+];
+
+const SERVICE_HOURS = {
+  rows:[
+    {day:"Monday – Friday", hours:"7:00 AM – 4:00 PM", pickup:"Until 5:00 PM", closed:false},
+    {day:"Saturday", hours:"7:00 AM – 4:00 PM", pickup:"Until 5:00 PM", closed:false},
+    {day:"Sunday", hours:"Closed", pickup:"", closed:true}
+  ]
+};
+
+const TECHNICAL = [
+  {title:"Diagnostics", tags:["diagnostic","diagnostics"], content:"Fee is $259.00.\n\nScheduled Monday–Friday as drop-off only before 10 AM."},
+  {title:"Express Service", tags:["express","waiting appointment"], content:"Waiting appointments accepted until:\n\n11:00 AM (Morning)\n\nand\n\n2:30 PM (Afternoon).\n\nBlackout period:\n\n11:15 AM – 1:30 PM."},
+  {title:"Mainshop", tags:["mainshop"], content:"Daily capacity of 70 units.\n\nThe latest waiting appointment for routine maintenance is 2:30 PM."},
+  {title:"Maintenance Schedules", tags:["maintenance schedule","mileage"], content:"Recommended every 7,500 miles or 12 months for modern units 2021 and newer.\n\n2020 and older Every 3,000– miles or 3 months."}
+];
+
+const RECALLS = [
+  {title:"Recall Protocol", tags:["recall","software update"], content:"Schedule Monday–Friday before 10:00 AM.\n\nWaiters allowed only for software updates; all others are drop-off."},
+  {title:"Backordered Parts", tags:["backorder","palisade","seat belt"], content:"Palisade seat belt buckles are currently restricted due to availability."},
+  {title:"NYSI", tags:["nysi","inspection"], content:"Latest waiting appointment is 2:30 PM.\n\nInspections are performed in the Mainshop."}
+];
+
+const LOGISTICS = [
+  {title:"Towing", tags:["towing","tow","elite","roadside"], content:"Recommended providers are Elite 631-737-8439 or Hyundai Roadside.\n\nEmergency drop-offs accepted 24/7."},
+  {title:"Night Drop", tags:["night drop","drop box"], content:"24/7 drop box located at the front service entrance."},
+  {title:"Shuttle/Uber", tags:["shuttle","uber"], content:"Radius of 10–15 miles from the dealership.\n\nComplimentary Uber service available Two way."},
+  {title:"Loaner Vehicles", tags:["loaner","loaner vehicle","loaner car"], content:"Loaner only for major repairs, do not offer for proactively unless the customer is coming for multiple major services where the customer is spending a significant $ amount"}
+];
+
+const OBJECTIONS = [
+  {
+    id:"price", title:"Price", tags:["price","expensive","too high","cost"],
+    importance:5, importanceLabel:"Very High",
+    why:"Many customers assume the dealer is more expensive without checking current pricing or specials.",
+    approach:["Don't argue.","Instead:","Ask what service they compared.","Mention available service specials.","Explain the value (factory-trained technicians, OEM parts, warranty, multi-point inspection, loaners, etc.).","Offer to provide an estimate."],
+    example:"I understand wanting the best value. We frequently have service specials, this m. If I could give you a better price, would you be open to stopping by?",
+    related:["long_wait","not_interested"]
+  },
+  {
+    id:"long_wait", title:"Long Wait Time", tags:["wait","long wait","time to wait","scheduling"],
+    importance:5, importanceLabel:"Very High",
+    why:"Scheduling availability changes constantly.\n\nWhat was true six months ago may not be true today.",
+    example:"I completely understand. We know time is valuable, and we've made changes to improve our scheduling. I will personally speak with the service manager so we can do our best to expedite this for you. Would tomorrow or Saturday work better?",
+    note:"Notice you're selling the improvement, not defending the past.",
+    related:["price","no_time"]
+  },
+  {
+    id:"bad_experience", title:"Bad Customer Service Experience", tags:["bad service","bad experience","upset","complaint"],
+    importance:5, importanceLabel:"Critical",
+    why:"This is often an emotional objection. If handled correctly, it can create loyal returning customers.\n\nThis is the most important objection because it isn't about the repair—it's about trust.\n\nNever become defensive.",
+    approach:["Acknowledge the experience.","Apologize.","Empathize.","Explain that you'd like another opportunity.","Transition to scheduling."],
+    example:"I'm sorry, Mr. Smith. I understand your frustration and would appreciate the chance to earn your trust back. I'll have our top service advisor handle your vehicle. Does today or tomorrow morning work better for you?",
+    related:["poor_communication","not_interested"]
+  },
+  {
+    id:"poor_communication", title:"Poor Communication", tags:["poor communication","communication","staffing"],
+    importance:0, importanceLabel:"",
+    example:"I am sorry to hear ma'm. We might have had a staffing problem at that moment. I would hate to lose your business. Thank you for sharing this with me. It is important to improve our service and I will inform the service manager so when you come back, you are treated as a VIP customer. Additionally, I will give you a discount on your oil change. Do you prefer tomorrow or Friday morning?",
+    related:["bad_experience"]
+  },
+  {
+    id:"call_back", title:"\u201CI'll Call Back\u201D", tags:["call back","call me back","i'll call back"],
+    importance:0, importanceLabel:"",
+    example:"Absolutely, Mr./Mrs. [Last Name]. It'll only take about 30 seconds to reserve your appointment, and if your schedule changes, we can always call back. Is tomorrow or Saturday better?",
+    related:["no_time"]
+  },
+  {
+    id:"no_time", title:"\u201CI Don't Have Time.\u201D", tags:["don't have time","no time","busy"],
+    importance:0, importanceLabel:"",
+    approach:["Acknowledge their schedule and make it easy."],
+    example:"I completely understand. That's exactly why I'm calling today—to help you reserve a time that works around your schedule. Is tomorrow or Saturday morning better for you?",
+    related:["call_back","long_wait"]
+  },
+  {
+    id:"not_interested", title:"\u201CI'm Not Interested.\u201D", tags:["not interested","no thanks"],
+    importance:3, importanceLabel:"Moderate",
+    why:"Usually a smoke-screen objection. A question is often better than a rebuttal.\n\nThis is often a reflex objection.",
+    example:"I understand. Just out of curiosity, are you no longer servicing the vehicle, or are you having it serviced somewhere else?",
+    followUp:"If they say another shop:\n\n\u201CI appreciate your honesty. May I ask whether your main concern is price, convenience, or confidence in the work?\n\nWe use factory-certified technicians and follow manufacturer's procedures to ensure your warranty and resale value remain protected, we check for recalls and complete them if necessary, and MPI (break down the MPI) to create more value. May I ask what you currently pay for an oil change? (Listen, offer a special, and add an additional 10%.)\u201D",
+    related:["price","bad_experience"]
+  },
+  {
+    id:"recently_serviced", title:"Recently Serviced Customer", tags:["recently serviced","already serviced","next service"],
+    importance:0, importanceLabel:"",
+    example:"It sounds like you're all set for now/ your vehicle must be in good shape. Based on your current mileage and driving habits, your next service should be around October. Let's make a tentative appointment for October 15th at 10 am? We can always reschedule it if needed",
+    related:[]
+  }
+];
+
+const QUICK_REFERENCE = [
+  {title:"Service Hours", content:"Monday – Friday: 7:00 AM – 4:00 PM\nVehicle Pick-up: Until 5:00 PM\n\nSaturday: 7:00 AM – 4:00 PM\nVehicle Pick-up: Until 5:00 PM\n\nSunday: Closed"},
+  {title:"Diagnostic", content:"$259.00\n\nDrop-off only before 10 AM Monday–Friday."},
+  {title:"Synthetic Oil Change", content:"$129.95"},
+  {title:"Tire Rotation", content:"$49.95"},
+  {title:"Wheel Alignment", content:"$239.95"},
+  {title:"Night Drop", content:"24/7 drop box located at the front service entrance."},
+  {title:"Uber", content:"Radius of 10–15 miles from dealership.\n\nComplimentary Uber service available."}
+];
+
+const QA_FORM = {
+  title:"Weekly Spiff — Outbound Calls Component",
+  passThreshold:90,
+  items:[
+    {text:"Proper greeting", score:7},
+    {text:"Did the agent acknowledge the customer concern? (if applicable)", score:6.5},
+    {text:"Thank you for your business (always in the beginning or middle of the call)", score:6.6},
+    {text:"How many miles goes your vehicle have approximately?", score:6.66},
+    {text:"Did agent offer the soonest available appointment?", score:6.66},
+    {text:"Anything else I can help you with?", score:6.66},
+    {text:"Did agent ask if the customer is waiting for dropping the vehicle off?", score:6.66},
+    {text:"Did the agent clearly explain what drop off means? (if applicable)", score:6.66},
+    {text:"Did agent verify the email address?", score:6.66},
+    {text:"Proper closing with the name of the dealership?", score:6.66},
+    {text:"Did the agent keep a willing and professional tone throughout the call?", score:6.66},
+    {text:"Was any dead air for more than 3 seconds?", score:6.66},
+    {text:"Did agent offer any upsell? (If applicable)", score:6.66},
+    {text:"Did agent ask if there was another vehicle to schedule?", score:6.66},
+    {text:"Did agent follow the policies?", score:6.66}
+  ],
+  note:"Updated: \u201CThank you for your business\u201D should be stated right after the customer express interest in booking an appointment, towards the beginning of your calls and not at the end of the call. If stated at the end, the points will be deducted from your QA score."
+};
+
+const CALL_SCRIPTS = [
+  {
+    id:"inbound", label:"INBOUND CALL",
+    lines:[
+      "Thank you for calling \u201CName of Dealership\u201D. My name is _____________.",
+      "How may I help you?",
+      "My pleasure!",
+      "May I have your phone number associated with your vehicle?",
+      "Thank you for your business!",
+      "Do you know how many miles your vehicle has?",
+      "What service does your vehicle require?",
+      "Does your vehicle need anything else",
+      {text:"Can you drop off the vehicle?", sub:["Mr/ Ms Customer, this means you will leave the vehicle and pick it up later."]},
+      "I will sending a confirmation email. Is your email customer@customer.com?",
+      "Thank you for choosing Millennium Hyundai. Have a good day."
+    ]
+  },
+  {
+    id:"outbound", label:"OUTBOUND CALL",
+    lines:[
+      "Good morning, is this Mr. Smith?",
+      "Hi. My name is _____ with Centereach Hyundai.",
+      "I see you bought this beautiful 2026 Tucson in October 2025. Thank you for your business.",
+      "I was calling because of the (recall, service, NYSI, etc.) that's due on your vehicle.",
+      "I have openings today and tomorrow. What day works best for you?",
+      "Do you know approximately how many miles your vehicle has?",
+      {text:"Mr./Ms. Customer, while your vehicle is here for that service, I will also perform (X service).", sub:["Offer an upsell \u2014 assume the upsell."]},
+      {text:"Would you like to drop it off or wait with it?", sub:["If it's a long service, inform the customer to drop off for the day."]},
+      {text:"Is your email address ___? So that we can send a confirmation.", sub:["If there is no email on file, ask for it."]},
+      {text:"Do you have another vehicle, or know anyone that owns a Hyundai? There are some safety recalls recently launched and we want to make sure every vehicle out there is safe to drive.", sub:["Be proactive: if you see the customer has another vehicle listed on their account, offer an appointment for that other vehicle."]},
+      "Is there anything else I can do for you today?",
+      "Thank you for choosing Centereach Hyundai. Have a nice day."
+    ],
+    note:"Keep a willing, professional tone the whole call, avoid dead air over 3 seconds, and follow dealership policy throughout \u2014 these are scored on every call regardless of outcome."
+  }
+];
+
+const SMS_TEMPLATES = [
+  {
+    "id": "sms_maint",
+    "label": "Maintenance Reminder",
+    "messages": [
+      {
+        "name": "Maintenance due",
+        "text": "We are reminding you that your vehicle may be due for maintenance. Please reply with your preferred date and time or call (631) 614-5340 to schedule an appointment.\n\nThank you! Your friends at Centereach Hyundai."
+      },
+      {
+        "name": "NY State inspection",
+        "text": "A friendly reminder from Centereach Hyundai that your vehicle\u2019s New York State inspection may be coming due. Please reply with your preferred date and time or call (631) 614-5340 to schedule an appointment.\n\nThank you! Your friends at Centereach Hyundai."
+      },
+      {
+        "name": "Missed appointment",
+        "text": "Hi! We noticed that you missed a recent service appointment and would like to help you reschedule. Please reply with your preferred date and time or call (631) 614-5340.\n\nThank you! Your friends at Centereach Hyundai."
+      }
+    ]
+  },
+  {
+    "id": "sms_pending",
+    "label": "Pending Recommendation",
+    "messages": [
+      {
+        "text": "A friendly reminder from Centereach Hyundai that your vehicle may have pending service recommendations. We would like to offer you 10% off, as well as our 0% interest pay-later program. Please reply with your preferred date and time or call (631) 614-5340 to schedule an appointment.\n\nThank you! Your friends at Centereach Hyundai."
+      }
+    ]
+  },
+  {
+    "id": "sms_recall",
+    "label": "Recall",
+    "messages": [
+      {
+        "text": "Based on your vehicle\u2019s year and model, it may have an open safety recall. Please reply with your preferred date and time or call (631) 614-5340 to schedule an appointment.\n\nThank you! Your friends at Centereach Hyundai."
+      }
+    ]
+  },
+  {
+    "id": "sms_special",
+    "label": "Maintenance Special Offer",
+    "messages": [
+      {
+        "text": "A special offer from Centereach Hyundai! Receive $10 off your next synthetic oil change. Please reply with your preferred date and time or call (631) 614-5340 to schedule an appointment.\n\nThank you! Your friends at Centereach Hyundai."
+      }
+    ]
+  }
+];
+
+const PRINCIPLES = [
+  "The purpose of a rebuttal isn\u2019t to \u201Cwin the argument.\u201D It\u2019s to determine whether the objection is the real reason the customer stopped servicing or simply an excuse to end the call.",
+  "When calling customers, your job is to uncover whether there is still an opportunity to earn their business back.",
+  "The biggest mistake BDC agents make: They hear an objection and immediately surrender."
+];
+
+const PRACTICES = [
+  {
+    title:"1. Handle Warranty Questions With Confidence",
+    tags:["warranty","coverage"],
+    content:"When a customer asks whether a repair or concern is covered under warranty, especially before scheduling an appointment, do not guess or guarantee coverage.\n\nExplain that final warranty coverage typically depends on diagnosis. Our job is to help the customer take the next step by scheduling an inspection so the service department can properly evaluate the vehicle.\n\nKey approach:\n• Acknowledge the customer's warranty question instead of avoiding it.\n• Never promise that something will be covered unless coverage has been confirmed.\n• Explain that the vehicle needs to be diagnosed to determine applicability.\n• Transition directly into offering the appointment.\n\nThe objective is to give the customer enough confidence and clarity to move forward without creating expectations we cannot guarantee."
+  },
+  {
+    title:"2. Lead With One Clear Service Option",
+    tags:["one option","service option","hesitation"],
+    content:"Avoid overwhelming customers with unnecessary choices. Start with the most appropriate service or appointment option based on the customer's needs.\n\nGiving too many options at once can create hesitation and make it easier for the customer to say no.\n\nBest practice: Recommend the strongest option first. If the customer cannot accept it or specifically asks for alternatives, then introduce additional options.\n\nBe confident in the recommendation. Customers are contacting us for guidance, not a menu of every possible choice."
+  },
+  {
+    title:"3. Use the 6-Month Factory-Recommended Service Interval",
+    tags:["6 month","low mileage","maintenance interval"],
+    content:"Low mileage should not automatically mean that a vehicle does not need service. If a customer argues about low mileage. Approach the customer using a 6 month factory service recommendation, rather than debating mileage.\n\nYou can also explain that staying current with manufacturer-recommended maintenance helps:\n• Identify potential concerns early\n• Protects the warranty as not doing it can convey negligence, in case of future warranty repairs.\n\nImportant: Do not tell customers that missing a service automatically voids their warranty. Warranty statements should always be accurate and consistent with manufacturer and dealership policy."
+  },
+  {
+    title:"4. Build Value Into Every Special Offer",
+    tags:["special offer","value","mpi"],
+    content:"Never present a special as only a price.\n\nCustomers should understand the value of bringing their vehicle to our service department, not simply the discount they are receiving.\n\nWhen applicable, reinforce benefits such as:\n• A thorough Multi-Point Inspection (MPI)\n• Checking and topping off vital fluids\n• A general evaluation of the vehicle's condition, brakes, tires, filters, hoses, steering, check ups.\n• An opportunity to identify maintenance or safety concerns before they become larger problems\n• Service performed by trained technicians\n\nThe special gets their attention; the value gives them a reason to schedule."
+  },
+  {
+    title:"5. More Quality Conversations = More Appointments",
+    tags:["conversations","call volume","appointments"],
+    content:"One of the biggest factors in increasing appointments is increasing the number of meaningful customer interactions.\n\nCalls, conversations, follow-ups, and responses create opportunities. If we increase the number of customers we actually speak with while maintaining good conversation quality, we create more opportunities to schedule appointments.\n\nFocus on:\nMore activity → More conversations → More opportunities → More appointments\n\nDo not measure effort only by the number of calls made. Pay attention to contacts, conversations, and appointments set."
+  },
+  {
+    title:"6. Declined Appointment Follow-Up",
+    tags:["declined","follow up","declined list"],
+    content:"I am creating dedicated lists where we can place customers who decline an appointment.\n\nIf you have made a genuine attempt to overcome the customer's objection and they still decline, add the customer to the appropriate declined-appointment list. I will handle the additional follow-up.\n\nThis also gives us an opportunity get the appointment and we can improve our approach in future calls."
+  },
+  {
+    title:"7. Be Intentional About Referrals and Additional Vehicles",
+    tags:["referrals","additional vehicles","recalls"],
+    content:"Do not overlook additional opportunities during a good customer conversation.\n\nWhen appropriate, ask whether:\n• There is another Hyundai at home\n• A spouse or family member owns a Hyundai/Toyota\n• The customer knows someone who owns a Hyundai/Toyota\n\nSay: \u201CThere are some recalls coming out recently, and some of them are safety recalls. I'd like to check and make sure every Hyundai out there is safe to drive.\u201D"
+  }
+];
+
+const RELATED_MAP = {
+  diagnostic:["Diagnostic Fee","Diagnostic scheduling requirement","Service hours","Drop-off requirement"],
+  oilchange:["Synthetic Oil Change price","Manager Special","Tire Rotation","Multi-Point Inspection","Price objection rebuttal"],
+  recall:["Recall Protocol","Waiting appointment rules","Software updates","Drop-off requirements","NYSI information"]
+};
+
+/* =========================================================================
+   Build a unified searchable index across all categories
+========================================================================= */
+function buildIndex(){
+  const idx = [];
+  PRICING.forEach(p=>idx.push({
+    kind:"pricing", title:p.service, category:"Pricing",
+    tags:[p.service.toLowerCase()], text:`${p.service} — ${p.price}${p.notes? " ("+p.notes+")":""}`,
+    goto:{view:"pricing"}
+  }));
+  idx.push({kind:"pricing", title:MANAGER_SPECIAL.title, category:"Pricing / Specials",
+    tags:["manager special","bundled maintenance package","multi-point inspection"],
+    text:MANAGER_SPECIAL.title+" — "+MANAGER_SPECIAL.includes.join(", ")+". "+MANAGER_SPECIAL.note,
+    goto:{view:"pricing"}});
+  idx.push({kind:"pricing", title:FINANCING.title, category:"Pricing / Specials",
+    tags:["financing","sunbit","payment plan"], text:FINANCING.content, goto:{view:"pricing"}});
+  APPOINTMENTS.forEach(a=>idx.push({
+    kind:"appointment", title:a.title, category:"Dealership Policy",
+    tags:a.tags, text:a.content, goto:{view:"policy"}
+  }));
+  idx.push({kind:"hours", title:"Service Hours", category:"Dealership Policy",
+    tags:["hours","open","close","time","service hours","saturday","sunday","monday"],
+    text:"Mon–Fri 7:00 AM–4:00 PM · Sat 7:00 AM–4:00 PM · Sun Closed. Vehicle pick-up until 5:00 PM.",
+    goto:{view:"policy"}});
+  TECHNICAL.forEach(t=>idx.push({
+    kind:"technical", title:t.title, category:"Dealership Policy",
+    tags:t.tags, text:t.content, goto:{view:"policy"}
+  }));
+  RECALLS.forEach(r=>idx.push({
+    kind:"recall", title:r.title, category:"Recalls & Compliance",
+    tags:r.tags, text:r.content, goto:{view:"recalls"}
+  }));
+  LOGISTICS.forEach(l=>idx.push({
+    kind:"logistics", title:l.title, category:"Dealership Policy",
+    tags:l.tags, text:l.content, goto:{view:"policy"}
+  }));
+  OBJECTIONS.forEach(o=>idx.push({
+    kind:"objection", title:o.title+" (Objection)", category:"Objection Handling",
+    tags:o.tags, text:o.example, goto:{view:"objections", id:o.id}
+  }));
+  QUICK_REFERENCE.forEach(q=>idx.push({
+    kind:"quickref", title:q.title, category:"Quick Reference",
+    tags:[q.title.toLowerCase()], text:q.content, goto:{view:"quickref"}
+  }));
+  PRACTICES.forEach(p=>idx.push({
+    kind:"practice", title:p.title, category:"Best Practices",
+    tags:p.tags, text:p.content, goto:{view:"practices"}
+  }));
+  CALL_SCRIPTS.forEach(s=>idx.push({
+    kind:"script", title:s.label, category:"Call Scripts",
+    tags:[s.label.toLowerCase(), "call script", "script"],
+    text:s.lines.map(l=> typeof l==="string"? l : l.text).join(" · "),
+    goto:{view:"callscript"}
+  }));
+  SMS_TEMPLATES.forEach(t=>idx.push({
+    kind:"script", title:"SMS: "+t.label, category:"SMS Templates",
+    tags:[t.label.toLowerCase(), "sms", "text message", "template"],
+    text:t.messages.map(m=>m.text).join(" \u00B7 "),
+    goto:{view:"callscript"}
+  }));
+  return idx;
+}
+const SEARCH_INDEX = buildIndex();
+function rebuildIndex(){
+  SEARCH_INDEX.length = 0;
+  SEARCH_INDEX.push(...buildIndex());
+}
+
+// synonym hints so natural phrasing lands on the right entries
+const SYNONYMS = [
+  {test:/expensive|too high|too much|price/i, boost:["price"]},
+  {test:/open|close|hours|what time/i, boost:["service hours"]},
+  {test:/recall/i, boost:["recall"]},
+  {test:/oil change/i, boost:["oil change","synthetic oil"]},
+  {test:/not interested/i, boost:["not interested"]},
+  {test:/don'?t have time|no time|busy/i, boost:["don't have time"]},
+  {test:/bad (service|experience)/i, boost:["bad customer service experience"]},
+  {test:/call( me)? back/i, boost:["call back"]},
+  {test:/uber|shuttle/i, boost:["uber","shuttle"]},
+  {test:/night drop|drop box/i, boost:["night drop"]},
+  {test:/nysi|inspection/i, boost:["nysi"]},
+  {test:/alignment/i, boost:["wheel alignment"]},
+  {test:/diagnostic/i, boost:["diagnostic"]}
+];
+
+function search(query){
+  const q = query.trim().toLowerCase();
+  if(!q) return [];
+  let boosts = [];
+  SYNONYMS.forEach(s=>{ if(s.test.test(q)) boosts = boosts.concat(s.boost); });
+
+  const scored = SEARCH_INDEX.map(item=>{
+    let score = 0;
+    const hay = (item.title+" "+item.tags.join(" ")+" "+item.text).toLowerCase();
+    if(hay.includes(q)) score += 10;
+    q.split(/\s+/).forEach(word=>{
+      if(word.length>2 && hay.includes(word)) score += 2;
+    });
+    boosts.forEach(b=>{ if(hay.includes(b)) score += 6; });
+    return {item, score};
+  }).filter(r=>r.score>0);
+
+  scored.sort((a,b)=>b.score-a.score);
+  return scored.map(r=>r.item);
+}
+
+/* =========================================================================
+   State
+========================================================================= */
+const state = {
+  view:"dashboard",
+  activeObjection:null,
+  favorites:[],     // {kind,title,goto}
+  recent:[],        // strings
+  query:"",
+  qaChecked:{},     // {itemIndex: true}
+  qaRep:"",
+  qaCustomer:"",
+  scriptOpen:{}     // {scriptId: true}
+};
+
+function addRecent(q){
+  if(!q) return;
+  state.recent = [q, ...state.recent.filter(r=>r.toLowerCase()!==q.toLowerCase())].slice(0,8);
+}
+function toggleFavorite(item){
+  const key = item.title;
+  const exists = state.favorites.find(f=>f.title===key);
+  if(exists){ state.favorites = state.favorites.filter(f=>f.title!==key); }
+  else{ state.favorites = [...state.favorites, item]; }
+  renderFavoritesArea();
+}
+function isFav(title){ return !!state.favorites.find(f=>f.title===title); }
+
+/* =========================================================================
+   Rendering helpers
+========================================================================= */
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function nl2br(s){ return esc(s).replace(/\n/g,"<br>"); }
+function stars(n){
+  if(!n) return "";
+  return "★".repeat(n) + "☆".repeat(5-n);
+}
+
+let copyCounter = 0;
+function copyButtonHTML(text){
+  const id = "copy_"+(copyCounter++);
+  window.__copyPayloads = window.__copyPayloads || {};
+  window.__copyPayloads[id] = text;
+  return `<button class="copybtn" data-copyid="${id}">📋 Copy</button>`;
+}
+
+document.addEventListener("click", (e)=>{
+  const btn = e.target.closest(".copybtn");
+  if(btn){
+    const id = btn.getAttribute("data-copyid");
+    const text = window.__copyPayloads[id];
+    navigator.clipboard && navigator.clipboard.writeText(text).catch(()=>{});
+    btn.classList.add("copied");
+    btn.textContent = "✓ Copied";
+    setTimeout(()=>{ btn.classList.remove("copied"); btn.innerHTML="📋 Copy"; }, 1400);
+  }
+  const nav = e.target.closest("[data-nav]");
+  if(nav){
+    const view = nav.getAttribute("data-nav");
+    const oid = nav.getAttribute("data-objid");
+    goTo(view, oid);
+  }
+  const fav = e.target.closest("[data-fav]");
+  if(fav){
+    const title = fav.getAttribute("data-fav");
+    const kind = fav.getAttribute("data-favkind");
+    const gview = fav.getAttribute("data-favview");
+    const gid = fav.getAttribute("data-favid")||null;
+    toggleFavorite({title, kind, goto:{view:gview, id:gid}});
+    fav.classList.toggle("active");
+  }
+  const chip = e.target.closest("[data-searchchip]");
+  if(chip){
+    const val = chip.getAttribute("data-searchchip");
+    document.getElementById("globalSearch").value = val;
+    runSearch(val);
+  }
+  const scriptToggle = e.target.closest("[data-scripttoggle]");
+  if(scriptToggle){
+    const id = scriptToggle.getAttribute("data-scripttoggle");
+    state.scriptOpen[id] = !state.scriptOpen[id];
+    render();
+  }
+});
+
+/* =========================================================================
+   Navigation
+========================================================================= */
+const NAV_ITEMS = [
+  {view:"dashboard", icon:"🏠", label:"Dashboard"},
+  {view:"pricing", icon:"💰", label:"Pricing"},
+  {view:"policy", icon:"📑", label:"Dealership Policy"},
+  {view:"recalls", icon:"⚠️", label:"Recalls"},
+  {view:"objections", icon:"💬", label:"Objections"},
+  {view:"practices", icon:"📘", label:"Best Practices"},
+  {view:"quickref", icon:"📋", label:"Quick Reference"},
+  {view:"qa", icon:"✅", label:"QA Form"},
+  {view:"callscript", icon:"📞", label:"Call Script & SMS Template"},
+];
+
+function renderNav(){
+  const nav = document.getElementById("navList");
+  nav.innerHTML = NAV_ITEMS.map(n=>`
+    <button data-nav="${n.view}" class="${state.view===n.view?'active':''}">
+      <span class="icon">${n.icon}</span>${n.label}
+    </button>`).join("");
+}
+
+function goTo(view, id){
+  state.view = view;
+  state.activeObjection = id||null;
+  document.getElementById("sidebar").classList.remove("open");
+  renderNav();
+  render();
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+/* =========================================================================
+   View renderers
+========================================================================= */
+function viewDashboard(){
+  const cards = [
+    {view:"pricing", icon:"💰", title:"Pricing", desc:"Service pricing and manager specials."},
+    {view:"policy", icon:"📑", title:"Dealership Policy", desc:"Appointments, technical guidelines, logistics, and service hours — A to Z."},
+    {view:"recalls", icon:"⚠️", title:"Recalls & Compliance", desc:"Recall protocol, backordered parts, NYSI."},
+    {view:"objections", icon:"💬", title:"Objection Rebuttals", desc:"Approved responses for live customer calls."},
+    {view:"practices", icon:"📘", title:"Best Practices & Guidelines", desc:"Warranty handling, service recommendations, special offer value."},
+    {view:"quickref", icon:"📋", title:"Quick Reference", desc:"The most frequently needed information, one page."},
+    {view:"qa", icon:"✅", title:"QA Form", desc:"Weekly spiff outbound-call scorecard — live score, 90+ pts to pass."},
+    {view:"callscript", icon:"📞", title:"Call Script & SMS Template", desc:"Approved call phrasing by call type, plus ready-to-send SMS templates."},
+  ];
+  const examples = ["How much is a diagnostic?","What time does service open?","Can I schedule a recall?","How much is an oil change?","Customer says price is too high","Customer had bad service","Customer doesn't have time","Customer says they're not interested","NYSI","Wheel alignment","Night drop","Uber"];
+
+  return `
+    <div class="eyebrow">BDC Reference System</div>
+    <h2 class="pagetitle">Dashboard</h2>
+
+    <div id="trkRoot"></div>
+
+    <div class="card-grid">
+      ${cards.map(c=>`
+        <button class="dcard" data-nav="${c.view}">
+          <span class="dicon">${c.icon}</span>
+          <div class="dtitle">${c.title}</div>
+          <div class="ddesc">${c.desc}</div>
+        </button>`).join("")}
+    </div>
+
+    <div class="section-heading">Try a search</div>
+    <div class="examples-row">
+      ${examples.map(x=>`<button class="chip" data-searchchip="${esc(x)}">${esc(x)}</button>`).join("")}
+    </div>
+
+    ${state.favorites.length? `<div class="section-heading">⭐ Favorites</div><div id="favArea" class="favlist"></div>`:""}
+    ${state.recent.length? `<div class="section-heading">Recent Searches</div><div id="recentArea" class="recentlist"></div>`:""}
+  `;
+}
+
+function renderFavoritesArea(){
+  const el = document.getElementById("favArea");
+  if(el){
+    el.innerHTML = state.favorites.map(f=>`
+      <button data-nav="${f.goto.view}" data-objid="${f.goto.id||''}"><span class="star">★</span>${esc(f.title)}</button>
+    `).join("") || `<span class="small-muted">No favorites yet.</span>`;
+  }
+  const rel = document.getElementById("recentArea");
+  if(rel){
+    rel.innerHTML = state.recent.map(r=>`<button data-searchchip="${esc(r)}">${esc(r)}</button>`).join("");
+  }
+}
+
+function viewSearch(){
+  const results = state.query ? search(state.query) : [];
+  return `
+    <div class="eyebrow">Global Knowledge Search</div>
+    <h2 class="pagetitle">Search</h2>
+    <p class="pagesub">Search across pricing, scheduling, logistics, technical guidelines, recalls, and objection rebuttals.</p>
+    <div id="searchResultsArea">${renderSearchResults(results)}</div>
+  `;
+}
+
+function renderSearchResults(results){
+  if(!state.query){
+    return `<div class="empty-state"><span class="eicon">🔎</span>Type in the search bar above to get started.</div>`;
+  }
+  if(results.length===0){
+    return `<div class="empty-state"><span class="eicon">⚠️</span><div class="emsg">${NOT_FOUND}</div></div>`;
+  }
+  return results.map(item=>{
+    return `
+      <div class="ticket">
+        <div class="ticket-stub"><span class="snum">${item.kind.toUpperCase()}</span></div>
+        <div class="ticket-body">
+          <div class="ticket-top">
+            <h3 class="ticket-title">${esc(item.title)}</h3>
+            <span class="ticket-cat">${esc(item.category)}</span>
+          </div>
+          <div class="ticket-field">
+            <div class="fval">${nl2br(item.text)}</div>
+          </div>
+          ${copyButtonHTML(item.text)}
+          <div class="related-row">
+            <button class="related-tag" data-nav="${item.goto.view}" data-objid="${item.goto.id||''}">Open in ${esc(item.category)} →</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function viewPricing(){
+  return `
+    <div class="eyebrow">Pricing &amp; Specials</div>
+    <h2 class="pagetitle">Pricing</h2>
+    <p class="pagesub">Displayed exactly as provided in the source document.</p>
+    <table class="ptable">
+      <thead><tr><th>Service Type</th><th>Standard Price / Range</th><th>Notes</th></tr></thead>
+      <tbody>
+        ${PRICING.map(p=>`
+          <tr>
+            <td>${esc(p.service)}</td>
+            <td class="price">${esc(p.price)}</td>
+            <td class="small-muted">${esc(p.notes)||"—"}</td>
+          </tr>`).join("")}
+      </tbody>
+    </table>
+    ${copyButtonHTML(PRICING.map(p=>`${p.service}: ${p.price}${p.notes?" ("+p.notes+")":""}`).join("\n"))}
+
+    <div class="section-heading">Manager Specials</div>
+    <div class="ticket">
+      <div class="ticket-stub"><span class="stars">★</span><span class="snum">SPECIAL</span></div>
+      <div class="ticket-body">
+        <div class="ticket-top"><h3 class="ticket-title">${esc(MANAGER_SPECIAL.title)}</h3></div>
+        <div class="ticket-field">
+          <div class="flabel">Includes</div>
+          <div class="fval">${MANAGER_SPECIAL.includes.map(i=>"• "+esc(i)).join("<br>")}</div>
+        </div>
+        <div class="ticket-field">
+          <div class="flabel">Note</div>
+          <div class="fval">${esc(MANAGER_SPECIAL.note)}</div>
+        </div>
+        ${copyButtonHTML(MANAGER_SPECIAL.title+"\nIncludes: "+MANAGER_SPECIAL.includes.join(", ")+"\n"+MANAGER_SPECIAL.note)}
+      </div>
+    </div>
+
+    <div class="section-heading">Financing</div>
+    <div class="ticket">
+      <div class="ticket-stub"><span class="snum">FIN</span></div>
+      <div class="ticket-body">
+        <div class="ticket-top"><h3 class="ticket-title">${esc(FINANCING.title)}</h3></div>
+        <div class="ticket-field"><div class="fval">${nl2br(FINANCING.content)}</div></div>
+        ${copyButtonHTML(FINANCING.content)}
+      </div>
+    </div>
+  `;
+}
+
+function genericTicketList(items, catLabel, iconStub){
+  return items.map(item=>`
+    <div class="ticket">
+      <div class="ticket-stub"><span class="snum">${iconStub}</span></div>
+      <div class="ticket-body">
+        <div class="ticket-top">
+          <h3 class="ticket-title">${esc(item.title)}</h3>
+          <button class="fav-toggle ${isFav(item.title)?'active':''}" data-fav="${esc(item.title)}" data-favkind="${catLabel}" data-favview="${item._view}">★</button>
+        </div>
+        <div class="ticket-field"><div class="fval">${nl2br(item.content)}</div></div>
+        ${copyButtonHTML(item.content)}
+      </div>
+    </div>
+  `).join("");
+}
+
+/* Dealership Policy — unified, alphabetized view combining Appointments,
+   Technical Guidelines, Logistics & Transport, and Service Hours. */
+function buildPolicyItems(){
+  const items = [];
+  APPOINTMENTS.forEach(a=>items.push({
+    title:a.title, content:a.content, badge:"APPT", catLabel:"Appointments", _view:"policy"
+  }));
+  TECHNICAL.forEach(t=>items.push({
+    title:t.title, content:t.content, badge:"TECH", catLabel:"Technical", _view:"policy"
+  }));
+  LOGISTICS.forEach(l=>items.push({
+    title:l.title, content:l.content, badge:"LOG", catLabel:"Logistics", _view:"policy"
+  }));
+  items.push({
+    title:"Service Hours", isHours:true, badge:"HRS", catLabel:"Service Hours", _view:"policy"
+  });
+  items.sort((a,b)=>a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
+  return items;
+}
+
+function policyTicket(item){
+  if(item.isHours){
+    const hoursText = SERVICE_HOURS.rows.map(r=>`${r.day}: ${r.hours}${r.pickup? " (Pick-up "+r.pickup+")":""}`).join("\n");
+    return `
+      <div class="ticket">
+        <div class="ticket-stub"><span class="snum">${item.badge}</span></div>
+        <div class="ticket-body">
+          <div class="ticket-top">
+            <h3 class="ticket-title">${esc(item.title)}</h3>
+            <span class="ticket-cat">${esc(item.catLabel)}</span>
+          </div>
+          <div class="hours-hero" style="margin-top:12px;">
+            ${SERVICE_HOURS.rows.map(r=>`
+              <div class="hourcard ${r.closed?'closed':''}">
+                <div class="day">${esc(r.day)}</div>
+                <div class="hh">${esc(r.hours)}</div>
+                ${r.pickup? `<div class="pk">Vehicle Pick-up: ${esc(r.pickup)}</div>`:""}
+              </div>`).join("")}
+          </div>
+          ${copyButtonHTML(hoursText)}
+        </div>
+      </div>
+    `;
+  }
+  return `
+    <div class="ticket">
+      <div class="ticket-stub"><span class="snum">${item.badge}</span></div>
+      <div class="ticket-body">
+        <div class="ticket-top">
+          <h3 class="ticket-title">${esc(item.title)}</h3>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span class="ticket-cat">${esc(item.catLabel)}</span>
+            <button class="fav-toggle ${isFav(item.title)?'active':''}" data-fav="${esc(item.title)}" data-favkind="policy" data-favview="${item._view}">★</button>
+          </div>
+        </div>
+        <div class="ticket-field"><div class="fval">${nl2br(item.content)}</div></div>
+        ${copyButtonHTML(item.content)}
+      </div>
+    </div>
+  `;
+}
+
+function viewPolicy(){
+  const items = buildPolicyItems();
+  return `
+    <div class="eyebrow">Dealership Policy</div>
+    <h2 class="pagetitle">Dealership Policy</h2>
+    <p class="pagesub">Appointments, Technical Guidelines, Logistics &amp; Transport, and Service Hours — combined and arranged A to Z.</p>
+    ${items.map(policyTicket).join("")}
+  `;
+}
+
+const RECALL_LOOKUP_URL = "https://autoservice.hyundaiusa.com/campaignhome";
+
+function viewRecalls(){
+  const items = RECALLS.map(r=>({...r, _view:"recalls"}));
+  return `
+    <div class="eyebrow">Recalls &amp; Compliance</div>
+    <h2 class="pagetitle">Recalls &amp; Compliance</h2>
+    <p class="pagesub">Recall protocol, backordered parts, and NYSI scheduling.</p>
+    ${genericTicketList(items,"recall","RCL")}
+
+    <div class="section-heading">Safety Recalls &amp; Service Campaigns — VIN Lookup</div>
+    <div class="vin-card">
+      <div class="vin-card-main">
+        <h5 class="vin-h5">Enter your 17-digit Vehicle Identification Number (VIN)</h5>
+        <div class="vin-input-row">
+          <input type="text" id="vinInput" maxlength="17" autocomplete="off" spellcheck="false" placeholder="e.g. 5NPE34AF1LH123456">
+          <button type="button" class="btn-callmode" id="vinSearchBtn">Search</button>
+        </div>
+        <div id="vinResultMsg" class="vin-result-msg" style="display:none;">Please enter a valid 17-character VIN.</div>
+        <div class="vin-note">
+          Hyundai's official lookup tool requires a live, direct session to submit a VIN securely — it can't run reliably inside an embedded panel. Clicking <strong>Search</strong> copies the VIN to your clipboard and opens the official tool so you only need to paste it in.
+        </div>
+      </div>
+      <div class="vin-card-side">
+        <h4 class="vin-h4">What is a VIN?</h4>
+        <p class="vin-p">A unique 17-character serial number used to identify individual motor vehicles.</p>
+        <h4 class="vin-h4">Where do I find my VIN?</h4>
+        <p class="vin-p">
+          – Driver's side dashboard<br>
+          – Inside driver's side door jamb<br>
+          – Vehicle insurance card<br>
+          – Vehicle title record (pink slip)
+        </p>
+        <a class="copybtn" style="text-decoration:none;display:inline-flex;" href="${esc(RECALL_LOOKUP_URL)}" target="_blank" rel="noopener noreferrer">↗ Open Official Tool</a>
+      </div>
+    </div>
+    <div class="vin-contact-note">Hyundai Customer Care Center: <strong><a href="tel:18553719460">1 (855) 371-9460</a></strong> — 24 hours a day, 7 days a week. Have the last 8 characters of the VIN ready.</div>
+  `;
+}
+
+function checkVINFormat(vin){
+  return typeof vin === "string" && vin.trim().length === 17;
+}
+
+function handleVinSearch(){
+  const input = document.getElementById("vinInput");
+  const msg = document.getElementById("vinResultMsg");
+  const vin = input.value.trim().toUpperCase();
+  if(!checkVINFormat(vin)){
+    msg.style.display = "block";
+    input.focus();
+    return;
+  }
+  msg.style.display = "none";
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(vin).catch(()=>{});
+  }
+  window.open(RECALL_LOOKUP_URL, "_blank", "noopener,noreferrer");
+}
+
+
+function objectionTicket(o, expanded){
+  const parts = [];
+  if(o.why) parts.push(`<div class="ticket-field"><div class="flabel">Why it happens</div><div class="fval">${nl2br(o.why)}</div></div>`);
+  if(o.approach) parts.push(`<div class="ticket-field"><div class="flabel">Recommended Approach</div><div class="fval">${o.approach.map(a=>"• "+esc(a)).join("<br>")}</div></div>`);
+  parts.push(`<div class="ticket-field"><div class="flabel">Approved Rebuttal / Example</div><div class="quote-block">${nl2br(o.example)}</div>${copyButtonHTML(o.example)}</div>`);
+  if(o.followUp) parts.push(`<div class="ticket-field"><div class="flabel">Follow-up</div><div class="fval">${nl2br(o.followUp)}</div></div>`);
+  if(o.note) parts.push(`<div class="ticket-field"><div class="flabel">Note</div><div class="fval">${nl2br(o.note)}</div></div>`);
+  const relatedTitles = (o.related||[]).map(rid=>{
+    const rel = OBJECTIONS.find(x=>x.id===rid);
+    return rel ? `<button class="related-tag" data-nav="objections" data-objid="${rel.id}">${esc(rel.title)}</button>` : "";
+  }).join("");
+
+  return `
+    <div class="ticket">
+      <div class="ticket-stub">
+        ${o.importance? `<span class="stars">${stars(o.importance)}</span>`:""}
+        <span class="snum">OBJ</span>
+      </div>
+      <div class="ticket-body">
+        <div class="ticket-top">
+          <h3 class="ticket-title">${esc(o.title)}</h3>
+          <div style="display:flex;gap:8px;align-items:center;">
+            ${o.importanceLabel? `<span class="ticket-cat">${esc(o.importanceLabel)}</span>`:""}
+            <button class="fav-toggle ${isFav(o.title+' (Objection)')?'active':''}" data-fav="${esc(o.title+' (Objection)')}" data-favkind="objection" data-favview="objections" data-favid="${o.id}">★</button>
+          </div>
+        </div>
+        ${parts.join("")}
+        ${relatedTitles? `<div class="ticket-field"><div class="flabel">Related Objections</div><div class="related-row">${relatedTitles}</div></div>`:""}
+      </div>
+    </div>
+  `;
+}
+
+function viewObjections(){
+  const principlesHTML = `
+    <div class="principle-banner">
+      <div class="plabel">Core BDC Principle</div>
+      ${PRINCIPLES.map(p=>`<p>${esc(p)}</p>`).join("")}
+    </div>
+  `;
+  if(state.activeObjection){
+    const o = OBJECTIONS.find(x=>x.id===state.activeObjection);
+    if(!o){
+      return `<div class="eyebrow">Objection Handling</div><h2 class="pagetitle">Objections</h2><div class="empty-state"><div class="emsg">${NOT_FOUND}</div></div>`;
+    }
+    return `
+      <div class="eyebrow">Objection Handling Center</div>
+      <h2 class="pagetitle">${esc(o.title)}</h2>
+      <button class="chip" data-nav="objections" style="margin-bottom:16px;">← All Objections</button>
+      ${objectionTicket(o)}
+      ${principlesHTML}
+    `;
+  }
+  return `
+    <div class="eyebrow">Objection Handling Center</div>
+    <h2 class="pagetitle">Objections</h2>
+    <p class="pagesub">Select an objection to see the approved source guidance and rebuttal. No rebuttals are invented — only what appears in the source material.</p>
+    ${principlesHTML}
+    ${OBJECTIONS.map(o=>objectionTicket(o)).join("")}
+  `;
+}
+
+function viewQuickRef(){
+  return `
+    <div class="eyebrow">Quick Reference</div>
+    <h2 class="pagetitle">Quick Reference</h2>
+    <p class="pagesub">The most frequently needed information, in one place.</p>
+    ${QUICK_REFERENCE.map(q=>`
+      <div class="ticket">
+        <div class="ticket-stub"><span class="snum">QR</span></div>
+        <div class="ticket-body">
+          <div class="ticket-top"><h3 class="ticket-title">${esc(q.title)}</h3></div>
+          <div class="ticket-field"><div class="fval">${nl2br(q.content)}</div></div>
+          ${copyButtonHTML(q.content)}
+        </div>
+      </div>
+    `).join("")}
+  `;
+}
+
+function qaTotal(){
+  return QA_FORM.items.reduce((sum,item,i)=> sum + (state.qaChecked[i]? item.score : 0), 0);
+}
+
+function viewQA(){
+  const total = qaTotal();
+  const maxTotal = QA_FORM.items.reduce((s,i)=>s+i.score,0);
+  const passed = total >= QA_FORM.passThreshold;
+  return `
+    <div class="eyebrow">Weekly Spiff</div>
+    <h2 class="pagetitle">QA Form</h2>
+    <p class="pagesub">${esc(QA_FORM.title)} — call has to be ${QA_FORM.passThreshold}+ pts. Check off each item as it's confirmed on the call; the score updates live.</p>
+
+    <div class="qa-scorebar">
+      <div>
+        <div class="qa-score-label">Score</div>
+        <div class="qa-score-num">${total.toFixed(2)} <span style="font-size:16px;color:var(--steel-400);">/ ${maxTotal.toFixed(2)}</span></div>
+      </div>
+      <span class="qa-badge ${passed?'pass':'fail'}">${passed? '✓ Pass':'Below '+QA_FORM.passThreshold+' pts'}</span>
+    </div>
+
+    <div class="qa-layout">
+      <div class="qa-main">
+        <div class="section-heading">Outbound Calls Component</div>
+        ${QA_FORM.items.map((item,i)=>`
+          <div class="qa-row">
+            <input type="checkbox" id="qaItem${i}" data-qaidx="${i}" ${state.qaChecked[i]?'checked':''}>
+            <label for="qaItem${i}">${esc(item.text)}</label>
+            <span class="qa-pts">${item.score}</span>
+          </div>`).join("")}
+        <button class="qa-resetbtn" id="qaResetBtn" type="button">↺ Reset Checklist</button>
+      </div>
+
+      <div class="qa-side">
+        <div class="section-heading" style="margin-top:0;">Attach Customer Information</div>
+        <div class="qa-field">
+          <div class="flabel">Rep</div>
+          <input type="text" id="qaRepInput" placeholder="Rep name" value="${esc(state.qaRep)}">
+        </div>
+        <div class="qa-field">
+          <div class="flabel">Customer Name</div>
+          <input type="text" id="qaCustomerInput" placeholder="Customer name" value="${esc(state.qaCustomer)}">
+        </div>
+      </div>
+    </div>
+
+    <div class="principle-banner" style="margin-top:22px;">
+      <div class="plabel">Updated Guidance</div>
+      <p>${esc(QA_FORM.note)}</p>
+    </div>
+  `;
+}
+
+function scriptLineHTML(line, idx){
+  if(typeof line === "string"){
+    return `<div class="script-line"><span class="script-num">${idx+1}.</span><span class="script-text">${esc(line)}</span></div>`;
+  }
+  return `
+    <div class="script-line">
+      <span class="script-num">${idx+1}.</span>
+      <div>
+        <span class="script-text">${esc(line.text)}</span>
+        ${(line.sub||[]).map(s=>`<div class="script-subline">– ${esc(s)}</div>`).join("")}
+      </div>
+    </div>`;
+}
+
+function scriptCopyText(s){
+  return s.lines.map(l=> typeof l==="string"? l : l.text + (l.sub? "\n   – "+l.sub.join("\n   – "):"")).join("\n\n");
+}
+
+function smsMsgHTML(m){
+  const PHONE="(631) 614-5340";
+  const shown = nl2br(m.text).split(PHONE).join('<span class="ph notranslate" translate="no" data-num="'+PHONE+'"></span>');
+  return `<div class="sms-msg">
+    ${m.name? `<div class="sms-name">${esc(m.name)}</div>`:""}
+    <div class="sms-text">${shown}</div>
+    ${copyButtonHTML(m.text)}
+  </div>`;
+}
+
+function viewCallScript(){
+  return `
+    <div class="eyebrow">Call Scripts &amp; SMS Templates</div>
+    <h2 class="pagetitle">Call Script &amp; SMS Template</h2>
+    <p class="pagesub">Approved phrasing for live calls, plus SMS templates. Click a tile below to expand it.</p>
+    ${CALL_SCRIPTS.map(s=>{
+      const open = !!state.scriptOpen[s.id];
+      return `
+      <div class="script-block">
+        <button class="script-toggle" data-scripttoggle="${s.id}" type="button">
+          <span class="script-chevron ${open?'open':''}">▸</span>
+          <span class="script-label">${esc(s.label)}</span>
+        </button>
+        <div class="script-body ${open?'open':''}">
+          ${s.lines.map((l,i)=>scriptLineHTML(l,i)).join("")}
+          ${copyButtonHTML(scriptCopyText(s))}
+          ${s.note? `<div class="quote-block" style="margin-top:14px;font-style:normal;">${esc(s.note)}</div>`:""}
+        </div>
+      </div>`;
+    }).join("")}
+    <div class="section-heading">SMS Templates</div>
+    ${SMS_TEMPLATES.map(t=>{
+      const open = !!state.scriptOpen[t.id];
+      return `
+      <div class="script-block">
+        <button class="script-toggle" data-scripttoggle="${t.id}" type="button">
+          <span class="script-chevron ${open?'open':''}">\u25B8</span>
+          <span class="script-label">${esc(t.label)}</span>
+        </button>
+        <div class="script-body ${open?'open':''}">
+          ${t.messages.map(smsMsgHTML).join("")}
+        </div>
+      </div>`;
+    }).join("")}
+  `;
+}
+
+function viewPractices(){
+  const items = PRACTICES.map(p=>({title:p.title, content:p.content, _view:"practices"}));
+  return `
+    <div class="eyebrow">Coaching Notes</div>
+    <h2 class="pagetitle">Best Practices &amp; Guidelines</h2>
+    <p class="pagesub">Coaching guidance for handling warranty questions, service recommendations, special offers, and call quality.</p>
+    ${genericTicketList(items,"practice","BP")}
+  `;
+}
+
+/* =========================================================================
+   Appointment Sales Tracker & Counter (Google Sheet)
+   - Rep column = unique identifier (default PL)
+   - Week runs Sunday -> Saturday
+   - "Show" = Rep is PL AND RO column is not blank (unique RO count)
+========================================================================= */
+const TRK_DEFAULTS = {
+  sheetId:"1WqqTaBpNh274tCFz3A3vkAMuFuQpxKgGww5q2S_4QnQ",
+  sheetName:"APPT",  // source tab
+  rep:"PL",
+  dateCol:"",        // blank = auto-detect
+  roCol:"",          // blank = auto-detect
+  repCol:"",         // blank = auto-detect
+  gid:"",            // optional: tab gid (number in the sheet URL after gid=)
+  pubUrl:""          // optional: "Publish to web" CSV link (most reliable for IMPORTRANGE sheets)
+};
+const trk = {
+  cfg:Object.assign({}, TRK_DEFAULTS),
+  status:"idle",     // idle | loading | ok | error
+  error:"",
+  headers:[],
+  rows:[],           // array of objects keyed by header
+  weekOffset:0,
+  monthOffset:0,
+  showSettings:false,
+  loadedAt:null,
+  rawQuery:"",
+  rawFilter:"all",   // all | show | pend
+  rawOpen:true,
+  dateMode:"appt"    // appt = Appointment Date (G) | made = Date Made (F)
+};
+try{
+  const saved = JSON.parse(localStorage.getItem("trkCfg")||"null");
+  if(saved) Object.assign(trk.cfg, saved);
+  trk.cfg.sheetId = TRK_DEFAULTS.sheetId; // always use the current source sheet
+  if(!trk.cfg.sheetName) trk.cfg.sheetName = TRK_DEFAULTS.sheetName;
+  const dm=localStorage.getItem("trkDateMode");
+  if(dm==="made"||dm==="appt") trk.dateMode=dm;
+}catch(e){}
+function trkSaveCfg(){ try{ localStorage.setItem("trkCfg", JSON.stringify(trk.cfg)); }catch(e){} }
+
+function trkParseCSV(text){
+  const rows=[]; let row=[], cell="", q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){
+      if(c==='"'){ if(text[i+1]==='"'){cell+='"';i++;} else q=false; }
+      else cell+=c;
+    }else{
+      if(c==='"') q=true;
+      else if(c===","){ row.push(cell); cell=""; }
+      else if(c==="\n"){ row.push(cell); rows.push(row); row=[]; cell=""; }
+      else if(c!=="\r") cell+=c;
+    }
+  }
+  if(cell.length||row.length){ row.push(cell); rows.push(row); }
+  return rows;
+}
+
+function trkParseDate(v){
+  if(!v) return null;
+  let s=String(v).trim();
+  if(!s) return null;
+  let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+  if(m){
+    let y=+m[3]; if(y<100) y+=2000;
+    return new Date(y,+m[1]-1,+m[2]);
+  }
+  m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if(m) return new Date(+m[1],+m[2]-1,+m[3]);
+  const d=new Date(s);
+  if(isNaN(d)) return null;
+  return new Date(d.getFullYear(),d.getMonth(),d.getDate());
+}
+
+function trkFindCol(headers, exact, contains){
+  const low=headers.map(h=>h.trim().toLowerCase());
+  for(const e of exact){ const i=low.indexOf(e); if(i>-1) return headers[i]; }
+  for(const c of contains){ const i=low.findIndex(h=>h.includes(c)); if(i>-1) return headers[i]; }
+  return "";
+}
+function trkCols(){
+  const h=trk.headers, c=trk.cfg;
+  return {
+    rep: c.repCol || trkFindCol(h,["rep"],["rep"]),
+    ro:  c.roCol  || trkFindCol(h,["ro","ro#","ro #","ro number"],["ro"]),
+    date:c.dateCol|| trkFindCol(h,["date made","date_made","datemade"],["date made","made"]) || trkFindCol(h,["appt date","appointment date","date"],["appt date","appointment","date"]),
+    time:trkFindCol(h,["time","appt time"],["time"]),
+    cust:trkFindCol(h,["customer","customer name","name"],["customer","name"])
+  };
+}
+function trkDetailCols(){
+  const h=trk.headers;
+  const base=trkCols();
+  const low=h.map(x=>x.trim().toLowerCase());
+  const pick=(exact,contains)=>trkFindCol(h,exact,contains);
+  // APPT DATE must not match DATE MADE — pick exact first
+  let apptDate=pick(["appt date","appointment date","appt-date","apptdate"],["appt date","appointment date"]);
+  if(!apptDate){
+    // fallback: any header containing both appt + date
+    const i=low.findIndex(x=>x.includes("appt")&&x.includes("date"));
+    if(i>-1) apptDate=h[i];
+  }
+  let dateMade=pick(["date made","date_made","datemade","date-made"],["date made"]);
+  if(!dateMade && base.date && base.date.toLowerCase().includes("made")) dateMade=base.date;
+  let out={
+    vin:pick(["vin","vin #","vin number","vin#"],["vin"]),
+    name:base.cust||pick(["customer","customer name","name","client"],["customer","name","client"]),
+    phone:pick(["phone #","phone","phone number","tel","mobile","cell","contact","phone#"],["phone","tel","mobile","cell","contact"]),
+    service:pick(["service type","service-type","servicetype","service","concern","reason"],["service","concern","reason"]),
+    dateMade:dateMade||"",
+    apptDate:apptDate||"",
+    ro:base.ro,
+    notes:pick(["notes","note","comments","comment","remarks","remark"],["note","comment","remark"])
+  };
+  // Fixed Data Source layout lock: F=Date Made, G=Appt Date, H=RO, I=Notes
+  // (A=VIN, B=Name, C=Phone, D=Service Type as positional fallback)
+  const at=i=>h[i]||"";
+  if(h.length>=9){
+    if(at(5)) out.dateMade=at(5);
+    if(at(6)) out.apptDate=at(6);
+    if(at(7)) out.ro=at(7);
+    if(at(8)) out.notes=at(8);
+  }
+  if(!out.vin&&at(0)) out.vin=at(0);
+  if(!out.name&&at(1)) out.name=at(1);
+  if(!out.phone&&at(2)) out.phone=at(2);
+  if(!out.service&&at(3)) out.service=at(3);
+  return out;
+}
+
+function trkLoadJsonp(c){
+  return new Promise((resolve,reject)=>{
+    const s=document.createElement("script");
+    const timer=setTimeout(()=>{ cleanup(); reject(new Error("Timed out - sheet is likely not shared (Anyone with the link can view), or the tab name is wrong")); },12000);
+    function cleanup(){ clearTimeout(timer); s.remove(); }
+    window.google=window.google||{}; google.visualization=google.visualization||{}; google.visualization.Query=google.visualization.Query||{};
+    google.visualization.Query.setResponse=function(r){
+      cleanup();
+      if(!r||r.status!=="ok"||!r.table){ return reject(new Error((r&&r.errors&&r.errors[0]&&r.errors[0].detailed_message)||"Sheet returned an error")); }
+      const cell=x=>x==null?"":String(x.f!=null?x.f:(x.v!=null?x.v:""));
+      const out=[r.table.cols.map(k=>k.label||"")];
+      r.table.rows.forEach(row=>out.push((row.c||[]).map(cell)));
+      resolve(out);
+    };
+    s.onerror=()=>{ cleanup(); reject(new Error("Blocked or not shared - set the sheet to Anyone with the link can view")); };
+    s.src=`https://docs.google.com/spreadsheets/d/${c.sheetId}/gviz/tq?tqx=responseHandler:google.visualization.Query.setResponse&headers=0`+(c.gid?`&gid=${encodeURIComponent(c.gid)}`:(c.sheetName?`&sheet=${encodeURIComponent(c.sheetName)}`:""));
+    document.head.appendChild(s);
+  });
+}
+
+async function trkFetchCSV(url){
+  const res=await fetch(url);
+  if(!res.ok) throw new Error("HTTP "+res.status);
+  const text=await res.text();
+  if(/^\s*<(!doctype|html)/i.test(text)) throw new Error("Sheet is private");
+  return trkParseCSV(text);
+}
+
+async function trkLoad(){
+  trk.status="loading"; trk.error=""; trkRender();
+  const c=trk.cfg, base=`https://docs.google.com/spreadsheets/d/${c.sheetId}`;
+  const tab=c.gid?`&gid=${encodeURIComponent(c.gid)}`:(c.sheetName?`&sheet=${encodeURIComponent(c.sheetName)}`:"");
+  // Strategies, tried in order. headers=0 stops Google guessing the header row, which
+  // breaks sheets built with IMPORTRANGE. The header row is detected below instead.
+  const strategies=[];
+  if(c.pubUrl) strategies.push(["Published CSV",()=>trkFetchCSV(c.pubUrl)]);
+  strategies.push(["Sheet CSV",()=>trkFetchCSV(`${base}/gviz/tq?tqx=out:csv&headers=0${tab}`)]);
+  strategies.push(["Sheet script",()=>trkLoadJsonp(c)]);
+  if(c.gid) strategies.push(["Sheet export",()=>trkFetchCSV(`${base}/export?format=csv&gid=${encodeURIComponent(c.gid)}`)]);
+  const errors=[]; let all=null, method="";
+  for(const [name,fn] of strategies){
+    try{
+      const r=await fn();
+      if(r&&r.some(row=>row.some(x=>String(x).trim()))){ all=r; method=name; break; }
+      errors.push(name+": no data returned");
+    }catch(err){ errors.push(name+": "+(err.message||err)); }
+  }
+  if(!all){
+    trk.status="error"; trk.error=errors.join(" | ")||"no data"; trkRender(); return;
+  }
+  // header row = first row (within first 30) that has a "Rep" cell
+  const isRep=x=>String(x).trim().toLowerCase()==="rep";
+  let hi=all.findIndex((r,i)=>i<30 && r.some(isRep));
+  if(hi<0) hi=all.findIndex((r,i)=>i<30 && r.filter(x=>String(x).trim()).length>=3);
+  if(hi<0) hi=0;
+  const seen={};
+  const heads=(all[hi]||[]).map((x,i)=>{
+    let n=String(x).trim()||("Column "+(i+1));
+    if(seen[n]){ seen[n]++; n=n+" ("+seen[n]+")"; } else seen[n]=1;
+    return n;
+  });
+  const body=all.slice(hi+1).filter(r=>r.some(x=>String(x).trim()));
+  trk.headers=heads;
+  trk.rows=body.map(r=>{ const o={}; heads.forEach((h,i)=>{ o[h]=String(r[i]==null?"":r[i]).trim(); }); return o; });
+  trk.diag={method,rows:trk.rows.length,headerRow:hi+1,
+    refErr:all.slice(0,40).some(r=>r.some(x=>/^#(REF|N\/A|ERROR|VALUE)/i.test(String(x).trim())))};
+  trk.status="ok"; trk.loadedAt=new Date();
+  trkRender();
+}
+
+function trkStartOfWeek(d){ // Sunday
+  const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+  x.setDate(x.getDate()-x.getDay());
+  return x;
+}
+function trkSameDay(a,b){ return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate(); }
+function trkFmt(d,o){ return d.toLocaleDateString("en-US",o); }
+
+function trkMyRows(){
+  const cols=trkCols(), dcols=trkDetailCols(), rep=trk.cfg.rep.trim().toUpperCase();
+  if(!cols.rep||!cols.date) return {rows:[],cols,dcols};
+  const rows=[];
+  trk.rows.forEach(r=>{
+    if((r[cols.rep]||"").trim().toUpperCase()!==rep) return;
+    // Week bucketing follows trk.dateMode: appt = Appt Date (G), made = Date Made (F)
+    const apptD=dcols.apptDate?trkParseDate(r[dcols.apptDate]):null;
+    const madeD=dcols.dateMade?trkParseDate(r[dcols.dateMade]):null;
+    const legacyD=trkParseDate(r[cols.date]);
+    const d=trk.dateMode==="made"?(madeD||apptD||legacyD):(apptD||madeD||legacyD);
+    if(!d) return;
+    const roKey=dcols.ro||cols.ro;
+    const ro=roKey?(r[roKey]||"").trim():"";
+    rows.push({d, apptD:apptD||null, madeD:madeD||null, ro, show:!!ro, time:cols.time?r[cols.time]:"", cust:(dcols.name&&r[dcols.name])||(cols.cust?r[cols.cust]:"")||"",
+      vin:dcols.vin?r[dcols.vin]:"", phone:dcols.phone?r[dcols.phone]:"",
+      service:dcols.service?r[dcols.service]:"", dateMade:dcols.dateMade?r[dcols.dateMade]:"",
+      apptDate:dcols.apptDate?r[dcols.apptDate]:"", notes:dcols.notes?r[dcols.notes]:"", raw:r});
+  });
+  return {rows,cols,dcols};
+}
+function trkUniqueShows(list){ return new Set(list.filter(x=>x.show).map(x=>x.ro.toLowerCase())).size; }
+
+function trkRender(){
+  const el=document.getElementById("trkRoot");
+  if(!el) return;
+  const c=trk.cfg;
+  let body="";
+  if(trk.status==="loading"||trk.status==="idle"){
+    body=`<div class="trk-msg">Loading appointments from Google Sheet…</div>`;
+  }else if(trk.status==="error"){
+    body=`<div class="trk-msg err"><b>Couldn't load the sheet</b> (${esc(trk.error)}).<br>
+      Make sure the sheet is shared as <b>“Anyone with the link – Viewer”</b>, check the tab name in ⚙ Settings, then hit Refresh.<br>
+      <small>If the APPT tab uses IMPORTRANGE: open the sheet, click the cell with the formula and choose <b>Allow access</b>. If it still won't load, use File → Share → Publish to web (APPT tab, CSV) and paste that link into ⚙ Settings.</small></div>`;
+  }else{
+    const {rows,cols}=trkMyRows();
+    if(trk.diag&&trk.diag.refErr){
+      body+=`<div class="trk-msg err"><b>The sheet is returning formula errors (e.g. #REF!).</b> Open the sheet, click the IMPORTRANGE cell and choose <b>Allow access</b>, then hit Refresh.</div>`;
+    }
+    if(!cols.rep||!cols.date){
+      body+=`<div class="trk-msg err">Couldn't find the ${!cols.rep?"<b>Rep</b>":""}${!cols.rep&&!cols.date?" and ":""}${!cols.date?"<b>Date</b>":""} column. Open ⚙ Settings and pick the right column(s).</div>`;
+    }else{
+      body+=trkWeekHTML(rows,cols)+trkRawWeekHTML(rows,cols)+trkMonthHTML(rows,cols);
+    }
+  }
+  const settings=trk.showSettings?trkSettingsHTML():"";
+  el.innerHTML=`
+    <div class="section-heading">Appointment Sales Tracker &amp; Counter <span class="trk-rep">${esc(c.rep.toUpperCase())}</span></div>
+    <div class="trk-toolbar">
+      <button class="trk-btn" data-trk="refresh">↻ Refresh</button>
+      <button class="trk-btn" data-trk="settings">⚙ Settings</button>
+      <span class="trk-updated">${trk.loadedAt?"Updated "+trk.loadedAt.toLocaleTimeString([], {hour:"numeric",minute:"2-digit"}):""}</span>
+    </div>
+    ${settings}
+    ${body}`;
+}
+
+function trkSettingsHTML(){
+  const c=trk.cfg, cols=trkCols(), dc=trkDetailCols();
+  const opt=(cur,val)=>`<option value="${esc(val)}" ${cur===val?"selected":""}>${esc(val||"Auto-detect")}</option>`;
+  const sel=(id,cur)=>`<select id="${id}" class="trk-input">${opt(cur,"")}${trk.headers.map(h=>opt(cur,h)).join("")}</select>`;
+  return `<div class="trk-settings">
+    <label>Rep initials<input id="trkRep" class="trk-input" value="${esc(c.rep)}"></label>
+    <label>Sheet tab name<input id="trkTab" class="trk-input" value="${esc(c.sheetName)}"></label>
+    <label>Rep column${sel("trkRepCol",c.repCol)}</label>
+    <label>Date column (DATE MADE)${sel("trkDateCol",c.dateCol)}</label>
+    <label>RO column${sel("trkRoCol",c.roCol)}</label>
+    <label>Tab gid (optional)<input id="trkGid" class="trk-input" placeholder="number after gid= in the sheet URL" value="${esc(c.gid||"")}"></label>
+    <label>Published CSV link (optional)<input id="trkPub" class="trk-input" placeholder="File > Share > Publish to web > CSV" value="${esc(c.pubUrl||"")}"></label>
+    <div class="trk-detected">Using → Rep: <b>${esc(cols.rep||"—")}</b> · Date: <b>${esc(cols.date||"—")}</b> · RO: <b>${esc(cols.ro||"—")}</b>${trk.diag?`<br>Loaded <b>${trk.diag.rows}</b> rows via ${esc(trk.diag.method)} · header on row ${trk.diag.headerRow}`:""}<br>Details → VIN: <b>${esc(dc.vin||"—")}</b> · Name: <b>${esc(dc.name||"—")}</b> · Phone: <b>${esc(dc.phone||"—")}</b> · Service: <b>${esc(dc.service||"—")}</b><br>F=Date Made: <b>${esc(dc.dateMade||"—")}</b> · G=Appt Date: <b>${esc(dc.apptDate||"—")}</b> · H=RO: <b>${esc(dc.ro||"—")}</b> · I=Notes: <b>${esc(dc.notes||"—")}</b><br>Columns found: ${esc(trk.headers.join(" | ")||"—")}</div>
+    <button class="trk-btn primary" data-trk="save">Save &amp; Reload</button>
+  </div>`;
+}
+
+function trkStat(label,val,cls){ return `<div class="trk-stat ${cls||""}"><div class="trk-num">${val}</div><div class="trk-lbl">${label}</div></div>`; }
+
+function trkWeekHTML(rows,cols){
+  const today=new Date();
+  const start=trkStartOfWeek(today); start.setDate(start.getDate()+trk.weekOffset*7);
+  const end=new Date(start); end.setDate(end.getDate()+6);
+  const inWeek=rows.filter(x=>x.d>=start&&x.d<=end);
+  const shows=trkUniqueShows(inWeek);
+  const todayCount=rows.filter(x=>trkSameDay(x.d,today)).length;
+  const days=[];
+  for(let i=0;i<7;i++){
+    const d=new Date(start); d.setDate(d.getDate()+i);
+    const list=inWeek.filter(x=>trkSameDay(x.d,d)).sort((a,b)=>String(a.time).localeCompare(String(b.time)));
+    days.push({d,list});
+  }
+  const maxCount=Math.max(1,...days.map(x=>x.list.length));
+  const label=trk.weekOffset===0?"This Week":trk.weekOffset===-1?"Last Week":trk.weekOffset===1?"Next Week":"Week";
+  const spiff=inWeek.length>=70?{v:"Tier II",c:"good"}:inWeek.length>=60?{v:"Tier I",c:"good"}:{v:(60-inWeek.length)+" to 60",c:"amber"};
+  return `
+  <div class="trk-panel">
+    <div class="trk-head">
+      <div><div class="trk-title">${label} <span style="font-size:12px;color:var(--steel-400)">· by ${trk.dateMode==="made"?"Date Made":"Appt Date"}</span></div>
+        <div class="trk-range">${trkFmt(start,{month:"short",day:"numeric"})} (Sun) – ${trkFmt(end,{month:"short",day:"numeric",year:"numeric"})} (Sat)</div></div>
+      <div class="trk-nav">
+        <button class="trk-btn" data-trk="wprev">‹</button>
+        <button class="trk-btn" data-trk="wnow">Today</button>
+        <button class="trk-btn" data-trk="wnext">›</button>
+        <div class="trk-seg">
+          <button class="trk-btn ${trk.dateMode==="appt"?"active":""}" data-trk="mode-appt">Appt Date</button>
+          <button class="trk-btn ${trk.dateMode==="made"?"active":""}" data-trk="mode-made">Date Made</button>
+        </div>
+      </div>
+    </div>
+    <div class="trk-stats">
+      ${trkStat("Appointments",inWeek.length)}
+      ${trkStat("Shows (RO)",shows,"good")}
+      ${trkStat("Pending / No RO",inWeek.filter(x=>!x.show).length,"warn")}
+      ${trkStat("Spiff Update",spiff.v,spiff.c)}
+    </div>
+    <div class="trk-days">
+      ${days.map(({d,list})=>{
+        const isToday=trkSameDay(d,today);
+        return `<div class="trk-day ${isToday?"today":""}">
+          <div class="trk-dayname">${trkFmt(d,{weekday:"short"})}<span>${trkFmt(d,{month:"numeric",day:"numeric"})}</span></div>
+          <div class="trk-daycount">${list.length}</div>
+          <div class="trk-bar"><i style="width:${Math.round(list.length/maxCount*100)}%"></i></div>
+          <div class="trk-daylist">${list.map(x=>`<div class="trk-appt ${x.show?"show":""}" title="${esc((x.cust||"Appt")+(x.show?" — RO "+x.ro:" — No RO yet"))}">
+              <span class="a-name">${x.time?`<b>${esc(x.time)}</b> `:""}${esc(x.cust||"Appt")}</span>${x.show?`<em>RO ${esc(x.ro)}</em>`:""}</div>`).join("")}</div>
+        </div>`;}).join("")}
+    </div>
+  </div>`;
+}
+
+function trkWeekRange(){
+  const today=new Date();
+  const start=trkStartOfWeek(today); start.setDate(start.getDate()+trk.weekOffset*7);
+  const end=new Date(start); end.setDate(end.getDate()+6);
+  end.setHours(23,59,59,999);
+  return {start,end};
+}
+
+function trkRawWeekHTML(rows,cols){
+  const {start,end}=trkWeekRange();
+  let list=rows.filter(x=>x.d>=start&&x.d<=end);
+  list=list.slice().sort((a,b)=>a.d-b.d||String(a.time).localeCompare(String(b.time)));
+  const q=(trk.rawQuery||"").trim().toLowerCase();
+  if(trk.rawFilter==="show") list=list.filter(x=>x.show);
+  if(trk.rawFilter==="pend") list=list.filter(x=>!x.show);
+  if(q) list=list.filter(x=>((x.vin||"")+" "+(x.cust||"")+" "+(x.phone||"")+" "+(x.service||"")+" "+(x.dateMade||"")+" "+(x.apptDate||"")+" "+(x.ro||"")+" "+(x.notes||"")).toLowerCase().includes(q));
+  const shows=list.filter(x=>x.show).length;
+  const label=trk.weekOffset===0?"This Week":trk.weekOffset===-1?"Last Week":trk.weekOffset===1?"Next Week":"Week of "+trkFmt(start,{month:"short",day:"numeric"});
+  const rowsHtml=list.map(x=>{
+    return `<tr><td style="font-family:var(--font-mono);white-space:nowrap">${esc(x.vin||"—")}</td><td>${esc(x.cust||"—")}</td><td style="white-space:nowrap">${esc(x.phone||"—")}</td><td>${esc(x.service||"—")}</td><td style="white-space:nowrap">${esc(x.dateMade||"—")}</td><td style="white-space:nowrap">${esc(x.apptDate||trkFmt(x.d,{month:"short",day:"numeric"}))}</td><td style="font-family:var(--font-mono)">${esc(x.ro||"—")}</td><td>${esc(x.notes||"—")}</td></tr>`;
+  }).join("");
+  return `
+  <div class="trk-panel">
+    <div class="trk-head">
+      <div><div class="trk-title">Weekly Appointments <span style="font-size:12px;color:var(--steel-400)">· ${esc(label)} · by ${trk.dateMode==="made"?"Date Made":"Appt Date"}</span></div>
+        <div class="trk-range">${trkFmt(start,{month:"short",day:"numeric"})} – ${trkFmt(end,{month:"short",day:"numeric",year:"numeric"})} · <span class="trk-count">${list.length} appts · ${shows} shows</span></div></div>
+      <div class="trk-nav">
+        <div class="trk-seg">
+          <button class="trk-btn ${trk.dateMode==="appt"?"active":""}" data-trk="mode-appt">Appt Date</button>
+          <button class="trk-btn ${trk.dateMode==="made"?"active":""}" data-trk="mode-made">Date Made</button>
+        </div>
+        <div class="trk-seg">
+          <button class="trk-btn ${trk.rawFilter==="all"?"active":""}" data-trk="rawall">All</button>
+          <button class="trk-btn ${trk.rawFilter==="show"?"active":""}" data-trk="rawshow">Shows</button>
+          <button class="trk-btn ${trk.rawFilter==="pend"?"active":""}" data-trk="rawpend">Pending</button>
+        </div>
+        <button class="trk-btn" data-trk="rawtoggle">${trk.rawOpen?"Hide":"Show"}</button>
+        <button class="trk-btn" data-trk="rawcsv">⬇ CSV</button>
+      </div>
+    </div>
+    ${trk.rawOpen?`
+    <div class="trk-raw-toolbar">
+      <input id="trkRawSearch" class="trk-input" placeholder="Filter by VIN, name, phone, service, RO, notes…" value="${esc(trk.rawQuery||"")}">
+    </div>
+    <div class="trk-tablewrap">
+      <table class="trk-table">
+        <thead><tr><th>VIN</th><th>Name</th><th>Phone #</th><th>Service Type</th><th>Date Made</th><th>Appt Date</th><th>RO</th><th>Notes</th></tr></thead>
+        <tbody>${rowsHtml||'<tr><td colspan="8" style="color:var(--steel-400)">No appointments match this filter for this week.</td></tr>'}</tbody>
+      </table>
+    </div>`:""}
+  </div>`;
+}
+
+function trkDownloadWeekCSV(){
+  const {start,end}=trkWeekRange();
+  let list=rows_cache_sorted();
+  function rows_cache_sorted(){
+    let l=trkMyRows().rows.filter(x=>x.d>=start&&x.d<=end);
+    l=l.slice().sort((a,b)=>a.d-b.d||String(a.time).localeCompare(String(b.time)));
+    const q=(trk.rawQuery||"").trim().toLowerCase();
+    if(trk.rawFilter==="show") l=l.filter(x=>x.show);
+    if(trk.rawFilter==="pend") l=l.filter(x=>!x.show);
+    if(q) l=l.filter(x=>((x.vin||"")+" "+(x.cust||"")+" "+(x.phone||"")+" "+(x.service||"")+" "+(x.dateMade||"")+" "+(x.apptDate||"")+" "+(x.ro||"")+" "+(x.notes||"")).toLowerCase().includes(q));
+    return l;
+  }
+  const q=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"';
+  const lines=["VIN,Name,Phone,Service Type,Date Made,Appt Date,RO,Notes,Show"];
+  list.forEach(x=>{
+    lines.push([q(x.vin||""),q(x.cust||""),q(x.phone||""),q(x.service||""),q(x.dateMade||""),q(x.apptDate||""),q(x.ro||""),q(x.notes||""),q(x.show?"SHOW":"PENDING")].join(","));
+  });
+  const blob=new Blob([lines.join("\n")],{type:"text/csv"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="weekly-appointment-details-"+start.toLocaleDateString("en-CA")+".csv";
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+function trkMonthHTML(rows,cols){
+  const now=new Date();  const first=new Date(now.getFullYear(),now.getMonth()+trk.monthOffset,1);
+  const last=new Date(first.getFullYear(),first.getMonth()+1,0);
+  const inMonth=rows.filter(x=>x.d>=first&&x.d<=last);
+  const shows=trkUniqueShows(inMonth);
+  const rate=inMonth.length?Math.round(shows/inMonth.length*100):0;
+  // Sun-Sat week buckets inside the month
+  const weeks=[];
+  let ws=trkStartOfWeek(first);
+  while(ws<=last){
+    const we=new Date(ws); we.setDate(we.getDate()+6);
+    const list=inMonth.filter(x=>x.d>=ws&&x.d<=we);
+    weeks.push({ws:new Date(ws),we,appts:list.length,shows:trkUniqueShows(list)});
+    ws=new Date(ws); ws.setDate(ws.getDate()+7);
+  }
+  const maxW=Math.max(1,...weeks.map(w=>w.appts));
+  return `
+  <div class="trk-panel">
+    <div class="trk-head">
+      <div><div class="trk-title">${trkFmt(first,{month:"long",year:"numeric"})}</div>
+        <div class="trk-range">Monthly view · Show = Rep ${esc(trk.cfg.rep.toUpperCase())} + RO not blank (unique)</div></div>
+      <div class="trk-nav">
+        <button class="trk-btn" data-trk="mprev">‹</button>
+        <button class="trk-btn" data-trk="mnow">This Month</button>
+        <button class="trk-btn" data-trk="mnext">›</button>
+      </div>
+    </div>
+    <div class="trk-stats">
+      ${trkStat("# of Show Appts",shows,"good big")}
+      ${trkStat("Total Appts",inMonth.length)}
+      ${trkStat("Show Rate",rate+"%","amber")}
+    </div>
+    <div class="trk-weeks">
+      ${weeks.map(w=>`<div class="trk-wrow">
+        <div class="trk-wlabel">${trkFmt(w.ws,{month:"short",day:"numeric"})} – ${trkFmt(w.we,{month:"short",day:"numeric"})}</div>
+        <div class="trk-wbar"><i class="a" style="width:${w.appts/maxW*100}%"></i><i class="s" style="width:${w.shows/maxW*100}%"></i></div>
+        <div class="trk-wnum"><b>${w.shows}</b> / ${w.appts}</div>
+      </div>`).join("")}
+      <div class="trk-legend"><span class="s"></span>Shows <span class="a"></span>Appointments</div>
+    </div>
+  </div>`;
+}
+
+document.addEventListener("click",(e)=>{
+  const b=e.target.closest("[data-trk]"); if(!b) return;
+  const a=b.getAttribute("data-trk");
+  if(a==="refresh") return trkLoad();
+  if(a==="settings"){ trk.showSettings=!trk.showSettings; return trkRender(); }
+  if(a==="save"){
+    trk.cfg.rep=(document.getElementById("trkRep").value||"PL").trim();
+    trk.cfg.sheetName=document.getElementById("trkTab").value.trim();
+    trk.cfg.repCol=document.getElementById("trkRepCol").value;
+    trk.cfg.dateCol=document.getElementById("trkDateCol").value;
+    trk.cfg.roCol=document.getElementById("trkRoCol").value;
+    trk.cfg.gid=document.getElementById("trkGid").value.trim();
+    trk.cfg.pubUrl=document.getElementById("trkPub").value.trim();
+    trkSaveCfg(); return trkLoad();
+  }
+  if(a==="wprev") trk.weekOffset--;
+  if(a==="wnext") trk.weekOffset++;
+  if(a==="wnow") trk.weekOffset=0;
+  if(a==="mprev") trk.monthOffset--;
+  if(a==="mnext") trk.monthOffset++;
+  if(a==="mnow") trk.monthOffset=0;
+  if(a==="rawall"){ trk.rawFilter="all"; return trkRender(); }
+  if(a==="rawshow"){ trk.rawFilter="show"; return trkRender(); }
+  if(a==="rawpend"){ trk.rawFilter="pend"; return trkRender(); }
+  if(a==="rawtoggle"){ trk.rawOpen=!trk.rawOpen; return trkRender(); }
+  if(a==="rawcsv") return trkDownloadWeekCSV();
+  if(a==="mode-appt"){ trk.dateMode="appt"; try{localStorage.setItem("trkDateMode","appt");}catch(e){} return trkRender(); }
+  if(a==="mode-made"){ trk.dateMode="made"; try{localStorage.setItem("trkDateMode","made");}catch(e){} return trkRender(); }
+  trkRender();
+});
+
+document.addEventListener("input",(e)=>{
+  if(e.target&&e.target.id==="trkRawSearch"){ trk.rawQuery=e.target.value; const el=document.getElementById("trkRoot"); if(el){ clearTimeout(window._trkRawT); window._trkRawT=setTimeout(()=>{ const pos=e.target.selectionStart; trkRender(); const box=document.getElementById("trkRawSearch"); if(box){ box.focus(); box.setSelectionRange(pos,pos); } },350); } }
+});
+
+function trkInit(){
+  if(trk.status==="idle") trkLoad(); else trkRender();
+}
+
+/* Contact numbers: explicit text (dept visible) so copy works and extensions stay off */
+document.addEventListener("click",(e)=>{
+  const c=e.target.closest(".tel-copy");
+  if(c){
+    e.stopPropagation();
+    const txt=c.getAttribute("data-fmt")||c.getAttribute("data-copy")||"";
+    const done=()=>{ c.textContent="✓"; c.classList.add("ok"); setTimeout(()=>{ c.textContent="⧉"; c.classList.remove("ok"); },1200); };
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done).catch(()=>done()); }
+    else{ const ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta); ta.select(); try{document.execCommand("copy");}catch(_){} ta.remove(); done(); }
+    return;
+  }
+  const t=e.target.closest(".contact-block .tel"); if(t){ window.location.href="tel:"+t.getAttribute("data-tel"); }
+});
+document.addEventListener("keydown",(e)=>{
+  if(e.key==="Enter"){ const t=e.target.closest&&e.target.closest(".contact-block .tel"); if(t) window.location.href="tel:"+t.getAttribute("data-tel"); }
+});
+
+function render(){
+  const root = document.getElementById("viewRoot");
+  let html = "";
+  switch(state.view){
+    case "dashboard": html = viewDashboard(); break;
+    case "search": html = viewSearch(); break;
+    case "pricing": html = viewPricing(); break;
+    case "policy": html = viewPolicy(); break;
+    case "recalls": html = viewRecalls(); break;
+    case "objections": html = viewObjections(); break;
+    case "quickref": html = viewQuickRef(); break;
+    case "practices": html = viewPractices(); break;
+    case "qa": html = viewQA(); break;
+    case "callscript": html = viewCallScript(); break;
+    default: html = viewDashboard();
+  }
+  root.innerHTML = html;
+  renderFavoritesArea();
+  const vinBtn = document.getElementById("vinSearchBtn");
+  if(vinBtn){
+    vinBtn.addEventListener("click", handleVinSearch);
+    const vinInput = document.getElementById("vinInput");
+    vinInput.addEventListener("keydown", (e)=>{ if(e.key==="Enter") handleVinSearch(); });
+  }
+  wireQA();
+  if(state.view==="dashboard") trkInit();
+}
+
+function wireQA(){
+  document.querySelectorAll("[data-qaidx]").forEach(cb=>{
+    cb.addEventListener("change", (e)=>{
+      const idx = e.target.getAttribute("data-qaidx");
+      if(e.target.checked){ state.qaChecked[idx] = true; }
+      else{ delete state.qaChecked[idx]; }
+      const scoreNum = document.querySelector(".qa-score-num");
+      const badge = document.querySelector(".qa-badge");
+      if(scoreNum && badge){
+        const total = qaTotal();
+        const maxTotal = QA_FORM.items.reduce((s,i)=>s+i.score,0);
+        const passed = total >= QA_FORM.passThreshold;
+        scoreNum.innerHTML = `${total.toFixed(2)} <span style="font-size:16px;color:var(--steel-400);">/ ${maxTotal.toFixed(2)}</span>`;
+        badge.className = "qa-badge " + (passed?"pass":"fail");
+        badge.textContent = passed? "✓ Pass" : "Below "+QA_FORM.passThreshold+" pts";
+      }
+    });
+  });
+  const resetBtn = document.getElementById("qaResetBtn");
+  if(resetBtn){
+    resetBtn.addEventListener("click", ()=>{
+      state.qaChecked = {};
+      render();
+    });
+  }
+  const repInput = document.getElementById("qaRepInput");
+  if(repInput){
+    repInput.addEventListener("input", (e)=>{ state.qaRep = e.target.value; });
+  }
+  const custInput = document.getElementById("qaCustomerInput");
+  if(custInput){
+    custInput.addEventListener("input", (e)=>{ state.qaCustomer = e.target.value; });
+  }
+}
+
+/* =========================================================================
+   Search wiring
+========================================================================= */
+function runSearch(q){
+  state.query = q;
+  state.view = "search";
+  renderNav();
+  render();
+  if(q && q.trim()){
+    addRecent(q.trim());
+  }
+}
+let searchDebounce;
+document.getElementById("globalSearch").addEventListener("input", (e)=>{
+  clearTimeout(searchDebounce);
+  const val = e.target.value;
+  searchDebounce = setTimeout(()=>runSearch(val), 180);
+});
+document.getElementById("globalSearch").addEventListener("keydown", (e)=>{
+  if(e.key==="Enter"){ runSearch(e.target.value); }
+});
+
+/* Sidebar mobile toggle */
+document.getElementById("hamburgerBtn").addEventListener("click", ()=>{
+  document.getElementById("sidebar").classList.toggle("open");
+});
+
+/* =========================================================================
+   Quick Call Mode
+========================================================================= */
+const callModeOverlay = document.getElementById("callModeOverlay");
+document.getElementById("openCallMode")?.addEventListener("click", ()=>{
+  callModeOverlay.classList.add("open");
+  document.getElementById("callModeInput").value = "";
+  renderCallMode([]);
+  setTimeout(()=>document.getElementById("callModeInput").focus(), 50);
+});
+document.getElementById("closeCallMode").addEventListener("click", ()=>{
+  callModeOverlay.classList.remove("open");
+});
+
+function renderCallMode(results){
+  const root = document.getElementById("callModeRoot");
+  if(!results.length){
+    root.innerHTML = `
+      <div class="empty-state">
+        <span class="eicon">⚡</span>
+        Type what the customer is saying — pricing, hours, or an objection.
+      </div>
+      <div class="cm-quicklinks">
+        ${["That's too expensive","I don't have time","Bad experience last time","I'll call back","Not interested","How much is a diagnostic?","What time do you open?","Uber"].map(q=>`<button data-cmquick="${esc(q)}">${esc(q)}</button>`).join("")}
+      </div>
+    `;
+    return;
+  }
+  root.innerHTML = results.slice(0,5).map(item=>{
+    if(item.kind==="objection"){
+      const o = OBJECTIONS.find(x=>x.title+" (Objection)"===item.title);
+      return objectionTicket(o);
+    }
+    return `
+      <div class="ticket">
+        <div class="ticket-stub"><span class="snum">${item.kind.toUpperCase()}</span></div>
+        <div class="ticket-body">
+          <div class="ticket-top">
+            <h3 class="ticket-title">${esc(item.title)}</h3>
+            <span class="ticket-cat">${esc(item.category)}</span>
+          </div>
+          <div class="ticket-field"><div class="fval">${nl2br(item.text)}</div></div>
+          ${copyButtonHTML(item.text)}
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+document.getElementById("callModeInput").addEventListener("input", (e)=>{
+  const results = search(e.target.value);
+  renderCallMode(results);
+});
+document.addEventListener("click", (e)=>{
+  const q = e.target.closest("[data-cmquick]");
+  if(q){
+    const val = q.getAttribute("data-cmquick");
+    document.getElementById("callModeInput").value = val;
+    renderCallMode(search(val));
+  }
+});
+document.addEventListener("keydown", (e)=>{
+  if(e.key==="Escape" && callModeOverlay.classList.contains("open")){
+    callModeOverlay.classList.remove("open");
+  }
+});
+
+/* =========================================================================
+   Upload Update — merge admin-provided JSON into the in-memory data
+========================================================================= */
+function mergeByKey(arr, updates, key){
+  let added=0, updated=0;
+  if(!Array.isArray(updates)) return {added, updated, skipped:true};
+  updates.forEach(u=>{
+    if(!u || !u[key]) return;
+    const idx = arr.findIndex(item => item[key] && String(item[key]).toLowerCase()===String(u[key]).toLowerCase());
+    if(idx>=0){ arr[idx] = Object.assign({}, arr[idx], u); updated++; }
+    else{ arr.push(u); added++; }
+  });
+  return {added, updated};
+}
+
+function applyUpdate(data){
+  const log = [];
+  function report(label, res){
+    if(!res) return;
+    if(res.skipped){ log.push({ok:false, text:`${label}: not a list — skipped.`}); return; }
+    if(res.added || res.updated){
+      log.push({ok:true, text:`${label}: ${res.updated} updated, ${res.added} added.`});
+    }
+  }
+  if(data.pricing) report("Pricing", mergeByKey(PRICING, data.pricing, "service"));
+  if(data.managerSpecial && typeof data.managerSpecial==="object"){
+    Object.assign(MANAGER_SPECIAL, data.managerSpecial);
+    log.push({ok:true, text:"Manager Special: updated."});
+  }
+  if(data.appointments) report("Appointments", mergeByKey(APPOINTMENTS, data.appointments, "title"));
+  if(data.serviceHours && Array.isArray(data.serviceHours.rows)){
+    SERVICE_HOURS.rows = data.serviceHours.rows;
+    log.push({ok:true, text:"Service Hours: replaced."});
+  }
+  if(data.technical) report("Technical Guidelines", mergeByKey(TECHNICAL, data.technical, "title"));
+  if(data.recalls) report("Recalls & Compliance", mergeByKey(RECALLS, data.recalls, "title"));
+  if(data.logistics) report("Logistics & Transport", mergeByKey(LOGISTICS, data.logistics, "title"));
+  if(data.objections) report("Objections", mergeByKey(OBJECTIONS, data.objections, "id"));
+  if(data.quickReference) report("Quick Reference", mergeByKey(QUICK_REFERENCE, data.quickReference, "title"));
+  if(data.financing && typeof data.financing==="object"){
+    Object.assign(FINANCING, data.financing);
+    log.push({ok:true, text:"Financing: updated."});
+  }
+  if(data.practices) report("Best Practices", mergeByKey(PRACTICES, data.practices, "title"));
+
+  if(log.length){
+    rebuildIndex();
+    render();
+  }
+  return log;
+}
+
+const updateOverlay = document.getElementById("updateOverlay");
+document.getElementById("openUpdateModal")?.addEventListener("click", ()=>{
+  updateOverlay.classList.add("open");
+  document.getElementById("updateLog").innerHTML = "";
+});
+document.getElementById("closeUpdateModal").addEventListener("click", ()=>{
+  updateOverlay.classList.remove("open");
+});
+updateOverlay.addEventListener("click", (e)=>{
+  if(e.target === updateOverlay) updateOverlay.classList.remove("open");
+});
+
+document.getElementById("updateFileInput").addEventListener("change", (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{ document.getElementById("updateTextArea").value = reader.result; };
+  reader.readAsText(file);
+});
+
+document.getElementById("applyUpdateBtn").addEventListener("click", ()=>{
+  const raw = document.getElementById("updateTextArea").value.trim();
+  const logEl = document.getElementById("updateLog");
+  if(!raw){
+    logEl.innerHTML = `<div class="update-log-line err">Nothing to apply — upload a file or paste JSON first.</div>`;
+    return;
+  }
+  let data;
+  try{ data = JSON.parse(raw); }
+  catch(err){
+    logEl.innerHTML = `<div class="update-log-line err">Invalid JSON: ${esc(err.message)}</div>`;
+    return;
+  }
+  const results = applyUpdate(data);
+  if(!results.length){
+    logEl.innerHTML = `<div class="update-log-line err">No recognized keys found. See the schema hint above.</div>`;
+    return;
+  }
+  logEl.innerHTML = results.map(r=>`<div class="update-log-line ${r.ok?'ok':'err'}">${esc(r.text)}</div>`).join("");
+});
+
+document.getElementById("downloadDataBtn").addEventListener("click", ()=>{
+  const snapshot = {
+    pricing: PRICING, managerSpecial: MANAGER_SPECIAL, financing: FINANCING, appointments: APPOINTMENTS,
+    serviceHours: SERVICE_HOURS, technical: TECHNICAL, recalls: RECALLS,
+    logistics: LOGISTICS, objections: OBJECTIONS, quickReference: QUICK_REFERENCE, practices: PRACTICES
+  };
+  const blob = new Blob([JSON.stringify(snapshot, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "bdc-knowledge-base-data.json"; a.click();
+  URL.revokeObjectURL(url);
+});
+
+/* =========================================================================
+   Init
+========================================================================= */
+renderNav();
+render();
+</script>
+</body>
+</html>
+<script async src="/.netlify/scripts/hud?variant=public" data-nf-variant="public" data-netlify-site-id="aa2b67ae-b679-4fe7-849b-19c57c4b5771" data-app-host="app.netlify.com"></script>
