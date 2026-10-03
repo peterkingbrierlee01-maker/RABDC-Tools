@@ -5,7 +5,7 @@
 <!-- This site is hosted on Netlify. Anyone can build and deploy a site
      like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=aa2b67ae-b679-4fe7-849b-19c57c4b5771
      Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
 <title>BDC Service Knowledge Base &amp; Live Call Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -53,7 +53,7 @@ a{color:inherit;}
 .app{display:flex;min-height:100vh;}
 
 .sidebar{
-  width:290px;flex-shrink:0;
+  width:300px;flex-shrink:0;
   background:var(--graphite-900);
   border-right:1px solid var(--graphite-700);
   display:flex;flex-direction:column;
@@ -450,7 +450,7 @@ a{color:inherit;}
 
 /* Mobile */
 @media (max-width:900px){
-  .sidebar{position:fixed;left:-310px;transition:left .18s;box-shadow:0 0 0 9999px rgba(0,0,0,.5);}
+  .sidebar{position:fixed;left:-320px;transition:left .18s;box-shadow:0 0 0 9999px rgba(0,0,0,.5);}
   .sidebar.open{left:0;}
   .hamburger{display:flex;align-items:center;justify-content:center;}
   .content{padding:16px 14px 50px;}
@@ -604,6 +604,32 @@ body{background:var(--pk-paper);color:var(--pk-ink);}
 .callmode-overlay{background:var(--pk-paper);}
 .callmode-top{background:var(--pk-indigo);border-bottom:1px solid rgba(221,181,104,.18);}
 .callmode-top input{background:#fff;border-color:rgba(15,41,76,.2);color:var(--pk-ink);border-radius:100px;}
+/* ===== Responsive: fit any viewer device (phone / tablet / desktop) ===== */
+html{-webkit-text-size-adjust:100%;}
+body{overflow-x:hidden;}
+img,svg,table{max-width:100%;}
+.sidebar{max-width:85vw;}
+.trk-tablewrap{-webkit-overflow-scrolling:touch;}
+@media (max-width:900px){
+  .trk-head{flex-direction:column;align-items:stretch;}
+  .trk-nav{width:100%;justify-content:flex-start;}
+  .trk-nav .trk-btn{flex:1 1 auto;text-align:center;}
+  .trk-raw-toolbar{flex-direction:column;align-items:stretch;}
+  .trk-raw-toolbar .trk-input{width:100%;}
+  .trk-seg{flex-wrap:wrap;}
+  .trk-seg .trk-btn{flex:1 1 auto;text-align:center;}
+  .topbar-actions{flex-wrap:nowrap;overflow-x:auto;width:100%;justify-content:flex-start;padding-bottom:4px;}
+  .topbar-actions .btn-link{flex-shrink:0;}
+  .trk-stats{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:480px){
+  .trk-stats{grid-template-columns:repeat(2,1fr);}
+  .trk-num{font-size:26px;}
+  .trk-lbl{font-size:16px;}
+  .trk-head .trk-title{font-size:20px;}
+  .content{padding:14px 10px 50px;}
+  .searchwrap input{font-size:16px;} /* prevents iOS auto-zoom */
+}
 </style>
 </head>
 <body>
